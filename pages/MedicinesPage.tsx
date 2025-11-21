@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import BackButton from '../components/BackButton';
 import Medicines from '../components/medicines/Medicines';
 import MedicineDetail from '../components/medicines/MedicineDetail';
 import { Medicine } from '../types';
@@ -48,6 +49,9 @@ const MedicinesPage: React.FC = () => {
         <Navbar sectionRefs={dummyRefs as any} />
       </div>
       <main className="flex-grow">
+        <div className="container mx-auto px-6 py-6">
+          <BackButton />
+        </div>
         {selectedMedicine ? (
           <MedicineDetail
             medicine={selectedMedicine}
