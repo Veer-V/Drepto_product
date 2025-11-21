@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '../hooks/useAuth';
+import { Navigate } from 'react-router-dom';
 import { UserRole } from '../types';
 import PatientDashboard from '../components/dashboards/PatientDashboard';
 import DoctorDashboard from '../components/dashboards/DoctorDashboard';
@@ -8,6 +9,12 @@ import AIAssistant from '../components/AIAssistant';
 
 const DashboardPage: React.FC = () => {
   const { user, logout } = useAuth();
+  const isAdminAuthed = typeof window !== 'undefined' && localStorage.getItem('adminAuth') === 'true';
+
+  if (!user) {
+    // If no user in context, send to auth login
+    return <Navigate to="/auth" />;
+  }
 
   const renderDashboard = () => {
     switch (user?.role) {
@@ -18,7 +25,8 @@ const DashboardPage: React.FC = () => {
       case UserRole.NURSE:
         return <NurseDashboard user={user} />;
       default:
-        return <p>Invalid user role.</p>;
+        // Unknown role: if admin session exists, send to admin, else home
+        return isAdminAuthed ? <Navigate to="/admin/dashboard" /> : <Navigate to="/" />;
     }
   };
 

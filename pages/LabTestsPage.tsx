@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { CITIES, LAB_TESTS_DATA, LAB_PACKAGES_DATA, LAB_REVIEWS } from '../constants';
 import { LabTestDetail, LabPackageDetail } from '../types';
+import { loadLabTests } from '../components/admin/LabTestData';
 
 // --- Sub-Components to maintain cleaner code within the file ---
 
@@ -188,6 +189,7 @@ const LabTestsPage: React.FC = () => {
     const [view, setView] = useState<'home' | 'individual' | 'packages' | 'detail'>('home');
     const [selectedItem, setSelectedItem] = useState<LabTestDetail | LabPackageDetail | null>(null);
     const [detailType, setDetailType] = useState<'test' | 'package'>('test');
+    const [tests, setTests] = useState<LabTestDetail[]>([]);
 
     // Dummy Refs for Navbar
     const dummyRefs = { home: { current: null }, product: { current: null }, about: { current: null }, contact: { current: null } };
@@ -200,6 +202,26 @@ const LabTestsPage: React.FC = () => {
         setView('detail');
         window.scrollTo(0,0);
     };
+
+    // Load lab tests from localStorage, fallback to constants
+    useEffect(() => {
+        const load = () => {
+            try {
+                const items = loadLabTests();
+                setTests(items && items.length ? items as LabTestDetail[] : LAB_TESTS_DATA as LabTestDetail[]);
+            } catch {
+                setTests(LAB_TESTS_DATA as LabTestDetail[]);
+            }
+        };
+        load();
+        const onUpdate = () => load();
+        window.addEventListener('labtests:updated', onUpdate);
+        window.addEventListener('storage', onUpdate as any);
+        return () => {
+            window.removeEventListener('labtests:updated', onUpdate);
+            window.removeEventListener('storage', onUpdate as any);
+        };
+    }, []);
 
     return (
         <div className="flex flex-col min-h-screen bg-[#F1F5F9]">
@@ -256,7 +278,7 @@ const LabTestsPage: React.FC = () => {
 
                                 {/* Category Grid */}
                                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
-                                    {LAB_TESTS_DATA.map(test => (
+                                    {tests.map(test => (
                                          <div key={test.id + '_cat'} onClick={() => handleViewDetail(test, 'test')} className="bg-white p-4 rounded-xl border border-gray-100 hover:shadow-md cursor-pointer transition-all text-center group">
                                              <div className="w-12 h-12 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
                                                  <HeaderIcon d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
@@ -268,7 +290,7 @@ const LabTestsPage: React.FC = () => {
 
                                 <h2 className="text-xl font-bold text-gray-900 mb-4">Top Tests</h2>
                                 <div className="space-y-4">
-                                    {LAB_TESTS_DATA.map(test => (
+                                    {tests.map(test => (
                                         <div key={test.id} className="bg-white p-5 rounded-2xl border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all flex flex-col md:flex-row justify-between gap-4">
                                             <div className="flex-1 cursor-pointer" onClick={() => handleViewDetail(test, 'test')}>
                                                 <h3 className="text-lg font-bold text-gray-900 mb-1 hover:text-teal-600">{test.name}</h3>
