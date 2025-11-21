@@ -1,7 +1,9 @@
 
+
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { UserRole } from '../types';
+import BackButton from './BackButton';
 
 interface LoginProps {
   onToggleView: () => void;
@@ -26,12 +28,15 @@ const Login: React.FC<LoginProps> = ({ onToggleView }) => {
 
   return (
     <div>
+      <div className="mb-4">
+        <BackButton />
+      </div>
       <h2 className="text-2xl font-bold text-center text-dark-blue mb-6">Sign In</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">I am a</label>
-          <select 
-            value={role} 
+          <select
+            value={role}
             onChange={(e) => setRole(e.target.value as UserRole)}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-primary focus:border-primary"
           >
@@ -40,8 +45,8 @@ const Login: React.FC<LoginProps> = ({ onToggleView }) => {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Email or Phone</label>
-          <input 
-            type="text" 
+          <input
+            type="text"
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-primary focus:border-primary"
@@ -49,10 +54,10 @@ const Login: React.FC<LoginProps> = ({ onToggleView }) => {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-          <input 
+          <input
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)} 
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-primary focus:border-primary"
           />
         </div>

@@ -55,21 +55,20 @@ const Navbar: React.FC<NavbarProps> = ({ sectionRefs }) => {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled || !isHomePage
-            ? 'bg-white shadow-md py-2'
-            : 'bg-transparent py-4'
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled || !isHomePage
+          ? 'bg-white shadow-md py-2'
+          : 'bg-transparent py-4'
+          }`}
       >
         <div className="container mx-auto px-6 flex justify-between items-center">
-          
+
           {/* LOGO CLICKABLE */}
           <div
             className="flex items-center gap-3 cursor-pointer"
             onClick={() => navigate('/')}
           >
             <img
-              src="..\images\logo.png"
+              src="/images/logo.png"
               alt="Drepto Biodevices Logo"
               className="h-12 w-auto object-contain"
             />
@@ -81,11 +80,10 @@ const Navbar: React.FC<NavbarProps> = ({ sectionRefs }) => {
               <button
                 key={link.name}
                 onClick={() => handleNavigation(link)}
-                className={`text-gray-600 hover:text-primary transition-colors font-medium ${
-                  location.pathname === link.path && link.path !== '/'
-                    ? 'text-primary font-bold'
-                    : ''
-                }`}
+                className={`text-gray-600 hover:text-primary transition-colors font-medium ${location.pathname === link.path && link.path !== '/'
+                  ? 'text-primary font-bold'
+                  : ''
+                  }`}
               >
                 {link.name}
               </button>
@@ -179,20 +177,10 @@ const Navbar: React.FC<NavbarProps> = ({ sectionRefs }) => {
                 navigate('/auth');
                 setIsMobileMenuOpen(false);
               }}
-              className="bg-primary text-white px-8 py-3 rounded-full font-bold text-xl shadow-lg"
+              className="bg-primary text-white px-8 py-3 rounded-full font-bold text-xl shadow-lg hover:opacity-90 transition"
             >
-              
+              Sign Up
             </button>
-            {/* SIGN UP BUTTON */}
-    <button
-        onClick={() => {
-            navigate('/auth');
-            setIsMobileMenuOpen(false);
-        }}
-        className="bg-primary text-white px-8 py-3 rounded-full font-bold text-xl shadow-lg hover:opacity-90 transition"
-    >
-        Sign Up
-    </button>
           </div>
         </div>
       )}
