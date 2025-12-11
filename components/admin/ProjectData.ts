@@ -25,21 +25,6 @@ const STORAGE_KEY = 'admin_projects';
 // Seed data
 const initialProjects: Project[] = [
     {
-        id: 'p-1',
-        name: 'Free Eye Checkup Camp',
-        description: 'Community eye screening event in Downtown area.',
-        status: 'In Progress',
-        startDate: '2023-11-01',
-        endDate: '2023-11-15',
-        team: ['Dr. Sarah', 'Nurse John'],
-        tasks: [
-            { id: 't-1', title: 'Book Venue', assignee: 'Dr. Sarah', status: 'done', startDate: '2023-11-01', endDate: '2023-11-03', type: 'task' },
-            { id: 't-2', title: 'Arrange Equipment', assignee: 'Nurse John', status: 'inprogress', startDate: '2023-11-04', endDate: '2023-11-10', type: 'task' },
-            { id: 't-3', title: 'Print Flyers', assignee: 'Admin', status: 'todo', startDate: '2023-11-05', endDate: '2023-11-12', type: 'task' }
-        ],
-        progress: 33
-    },
-    {
         id: 'p-2',
         name: 'Methotrexate Transdermal Patch',
         description: 'End-to-end development of Methotrexate Transdermal Patch from formulation to commercial launch.',

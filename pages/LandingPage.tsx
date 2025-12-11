@@ -7,6 +7,8 @@ import AboutSection from '../components/AboutSection';
 import ContactSection from '../components/ContactSection';
 import Footer from '../components/Footer';
 import MobileHome from '../components/mobile/MobileHome';
+import FeaturedMedicines from '../components/FeaturedMedicines';
+import PopularLabTests from '../components/PopularLabTests';
 
 const LandingPage: React.FC = () => {
   const homeRef = useRef<HTMLDivElement>(null);
@@ -36,6 +38,8 @@ const LandingPage: React.FC = () => {
       <main className="hidden md:block">
         <div ref={homeRef}><HeroSection /></div>
         <div ref={productRef}><ProductSection /></div>
+        <FeaturedMedicines />
+        <PopularLabTests />
         <div ref={aboutRef}><AboutSection /></div>
         <div ref={contactRef}><ContactSection /></div>
       </main>

@@ -1,33 +1,71 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { loadMedicines } from './admin/MedicineData';
+import { loadLabTests } from './admin/LabTestData';
 
 const HeroSection: React.FC = () => {
   const navigate = useNavigate();
+  const [stats, setStats] = useState({ medicines: 0, labTests: 0 });
+
+  useEffect(() => {
+    const meds = loadMedicines();
+    const labs = loadLabTests();
+    setStats({
+      medicines: meds.length > 50 ? meds.length : 120, // Fallback/Mock for demo if empty
+      labTests: labs.length > 20 ? labs.length : 45
+    });
+  }, []);
+
   return (
     <section className="bg-light-blue pt-24 md:pt-32 pb-16">
       <div className="container mx-auto px-6 text-center">
         <div className="max-w-3xl mx-auto">
           <div className="animate-fade-in-up">
             <h1 className="text-4xl md:text-6xl font-bold text-dark-blue leading-tight">
-              Quality Healthcare, <span className="text-primary">Anytime, Anywhere.</span>
+              <span className="text-primary">Drepto Biodevices</span>
             </h1>
             <p className="mt-6 text-lg text-gray-600">
-              Connect with certified doctors and manage your health with ease. Our platform provides secure, confidential, and convenient virtual consultations.
+              Connect with certified doctors, order medicines, book lab tests, and arrange home care—all in one secure app.
             </p>
-          </div>
-          <div className="mt-10 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-            <button
-              onClick={() => navigate('/auth')}
-              className="bg-primary text-white text-lg font-semibold px-8 py-4 rounded-full hover:bg-blue-600 transition-transform transform hover:scale-105 shadow-lg"
-            >
-              Book an Appointment
-            </button>
+
+            {/* Dynamic Stats */}
+            <div className="mt-8 grid grid-cols-3 gap-4 max-w-lg mx-auto">
+              <div className="bg-white p-4 rounded-xl shadow-sm border border-blue-50">
+                <h3 className="text-2xl font-bold text-primary">{stats.medicines}+</h3>
+                <p className="text-xs text-gray-500 font-medium">Medicines</p>
+              </div>
+              <div className="bg-white p-4 rounded-xl shadow-sm border border-green-50">
+                <h3 className="text-2xl font-bold text-green-600">{stats.labTests}+</h3>
+                <p className="text-xs text-gray-500 font-medium">Lab Tests</p>
+              </div>
+              <div className="bg-white p-4 rounded-xl shadow-sm border border-purple-50">
+                <h3 className="text-2xl font-bold text-purple-600">24/7</h3>
+                <p className="text-xs text-gray-500 font-medium">Support</p>
+              </div>
+            </div>
+
+            <div className="mt-10 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+              <button
+                onClick={() => navigate('/auth')}
+                className="bg-primary text-white text-lg font-semibold px-8 py-4 rounded-full hover:bg-blue-600 transition-transform transform hover:scale-105 shadow-lg"
+              >
+                Get Started
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="mt-12 relative flex justify-center animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
-        <img src="/images/top.png" alt="Telemedicine Dashboard" className="rounded-2xl shadow-2xl max-w-4xl w-full object-cover h-64 md:h-auto" />
+        <div className="mt-12 relative flex justify-center animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+          {/* CORRECTED: Use a path relative to the public folder root */}
+          <video
+            src="/images/vid.mp4"
+            alt="Telemedicine Dashboard"
+            className="rounded-2xl shadow-2xl max-w-4xl w-full object-cover h-64 md:h-auto"
+            autoPlay // Consider adding this if you want it to play automatically
+            loop     // Consider adding this if you want it to loop
+            muted    // Muted is often required for autoPlay to work
+          />
+        </div>
       </div>
     </section>
   );

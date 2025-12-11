@@ -24,16 +24,8 @@ const AuthPage: React.FC = () => {
           <BackButton className="text-white hover:text-white/80" />
         </div>
         <div className="text-center mb-8 animate-fade-in-up flex flex-col items-center">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="relative h-12 w-12 flex items-center justify-center bg-white rounded-xl shadow-sm p-1">
-              <svg className="w-full h-full text-primary" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20 4V36M4 20H36" stroke="currentColor" strokeWidth="8" strokeLinecap="round" />
-              </svg>
-            </div>
-            <div className="flex flex-col items-start">
-              <span className="text-4xl font-bold text-primary tracking-tighter leading-none">Drepto</span>
-              <span className="text-[10px] font-bold text-gray-500 tracking-[0.2em] uppercase leading-none mt-0.5">Biodevices Pvt.Ltd.</span>
-            </div>
+          <div className="flex items-center justify-center mb-6">
+            <img src="/images/logo.png" alt="Drepto Logo" className="h-20 object-contain" />
           </div>
           <p className="text-gray-500 mt-2 font-medium">Quality Healthcare, Anytime, Anywhere.</p>
         </div>
