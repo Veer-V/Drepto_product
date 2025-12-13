@@ -94,16 +94,16 @@ const Navbar: React.FC<NavbarProps> = ({ sectionRefs }) => {
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             <button
-              onClick={() => navigate('/auth')}
+              onClick={() => navigate('/auth', { state: { view: 'login' } })}
               className="text-primary font-semibold hover:opacity-80 transition-opacity"
             >
-              Sign In
+              Login
             </button>
             <button
-              onClick={() => navigate('/auth')}
+              onClick={() => navigate('/auth', { state: { view: 'register' } })}
               className="bg-primary text-white px-5 py-2.5 rounded-full font-bold hover:bg-teal-700 transition-colors shadow-md"
             >
-              Sign Up
+              Register
             </button>
           </div>
 
@@ -166,21 +166,21 @@ const Navbar: React.FC<NavbarProps> = ({ sectionRefs }) => {
           <div className="flex flex-col space-y-4 mt-8">
             <button
               onClick={() => {
-                navigate('/auth');
+                navigate('/auth', { state: { view: 'login' } });
                 setIsMobileMenuOpen(false);
               }}
               className="text-primary font-bold text-xl"
             >
-              Sign In
+              Login
             </button>
             <button
               onClick={() => {
-                navigate('/auth');
+                navigate('/auth', { state: { view: 'register' } });
                 setIsMobileMenuOpen(false);
               }}
               className="bg-primary text-white px-8 py-3 rounded-full font-bold text-xl shadow-lg hover:opacity-90 transition"
             >
-              Sign Up
+              Register
             </button>
           </div>
         </div>

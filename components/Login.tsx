@@ -31,7 +31,7 @@ const Login: React.FC<LoginProps> = ({ onToggleView }) => {
       <div className="mb-4">
         <BackButton />
       </div>
-      <h2 className="text-2xl font-bold text-center text-dark-blue mb-6">Sign In</h2>
+      <h2 className="text-2xl font-bold text-center text-dark-blue mb-6">Login</h2>
       <form onSubmit={handleSubmit} className="space-y-5 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">I am a</label>
@@ -71,13 +71,13 @@ const Login: React.FC<LoginProps> = ({ onToggleView }) => {
           {error}
         </p>}
         <button type="submit" className="w-full bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-dark-blue transition-all shadow-lg hover:shadow-primary/30 transform hover:-translate-y-0.5">
-          Sign In
+          Login
         </button>
       </form>
       <p className="text-center text-sm text-gray-600 mt-6">
         Don't have an account?{' '}
         <button onClick={onToggleView} className="font-semibold text-primary hover:underline">
-          Sign Up
+          Register
         </button>
       </p>
     </div>

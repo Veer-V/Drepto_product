@@ -47,7 +47,7 @@ const HeroSection: React.FC = () => {
 
             <div className="mt-10 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
               <button
-                onClick={() => navigate('/auth')}
+                onClick={() => navigate('/auth', { state: { view: 'register' } })}
                 className="bg-primary text-white text-lg font-semibold px-8 py-4 rounded-full hover:bg-blue-600 transition-transform transform hover:scale-105 shadow-lg"
               >
                 Get Started

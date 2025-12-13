@@ -3,12 +3,21 @@
 import React, { useState } from 'react';
 import Login from '../components/Login';
 import Register from '../components/Register';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import BackButton from '../components/BackButton';
 
 const AuthPage: React.FC = () => {
   const [isLoginView, setIsLoginView] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  React.useEffect(() => {
+    if (location.state && (location.state as any).view === 'register') {
+      setIsLoginView(false);
+    } else if (location.state && (location.state as any).view === 'login') {
+      setIsLoginView(true);
+    }
+  }, [location.state]);
 
   const toggleView = () => setIsLoginView(!isLoginView);
 

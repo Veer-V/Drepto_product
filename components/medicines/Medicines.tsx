@@ -168,12 +168,12 @@ const Medicines: React.FC<MedicinesProps> = ({ onViewDetails }) => {
   };
 
   const handleWhatsApp = () => {
-    const text = encodeURIComponent('Hi, I want to order medicines.');
-    window.open(`https://wa.me/?text=${text}`, '_blank');
+    const text = encodeURIComponent('Hi! 👋 Can you help me place an order with Drepto Biodevices? 💊.');
+    window.open(`https://wa.me/919873594022?text=${text}`, '_blank');
   };
 
   const handleCall = () => {
-    window.location.href = 'tel:+911234567890';
+    window.location.href = 'tel:+919873594022';
   };
 
   const handleUploadClick = () => fileRef.current?.click();
