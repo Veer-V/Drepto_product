@@ -36,6 +36,17 @@ const PRODUCTS: Product[] = [
         category: "Pain Relief",
         ingredients: ["Boswellia", "Eucalyptus Oil", "Methyl Salicylate", "Menthol", "Camphor", "Nirgundi Extract (Optional)"],
         benefits: ["Instant Cooling Relief", "Long-Lasting Action (8-12 Hours)", "Reduces Muscle & Joint Pain", "Improves Micro-circulation", "Non-Greasy & Mess-Free"]
+    },
+    {
+        id: 3,
+        title: "Drepto Surveda Relief",
+        description: "Ultimate relief with sophisticated pain and inflammation treatment. 24h Active Patch.",
+        detailedDescription: "The most sophisticated and safest method of treating pain and inflammation. Powerful (NSAID) & Anti-Inflammatory Patch. Post Surgery Pain Relief. Recovery from minor or major strains, sprains & bruises. Dosage: One patch to be applied for 24 hours.",
+        price: 100,
+        image: "/images/drepto-surveda-relief.png",
+        category: "Pain Relief",
+        ingredients: ["Diclofenac Diethylamine BP 200mg"],
+        benefits: ["Active 24h Relief", "Anti-Inflammatory", "Post Surgery Relief", "Treats Strains & Sprains"]
     }
 ];
 

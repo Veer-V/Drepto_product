@@ -37,6 +37,7 @@ const DashboardPage: React.FC = () => {
         <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <div className="flex items-center gap-4">
             <BackButton />
+            <img src="/icon.png" alt="Drepto Logo" className="h-16 w-auto object-contain drop-shadow-sm hover:scale-105 transition-transform duration-300" />
             <h1 className="text-2xl font-bold text-gray-900">
               <span className="text-primary">Drepto</span> Dashboard
             </h1>

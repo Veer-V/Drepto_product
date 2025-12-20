@@ -5,19 +5,39 @@ import CouponPopup from '../../common/CouponPopup';
 
 // Icons
 const DoctorIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.8 2.3A.3.3 0 0 0 5 2.5h14a.2.2 0 0 0 .2-.2V2a.2.2 0 0 0-.2-.2H5a.2.2 0 0 0-.2.2v.3zM6 15h12a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1z" /><path d="M11 2v3.38a1.5 1.5 0 0 0 1.5 1.5h1.72" /><path d="M5.5 14.5A2.5 2.5 0 0 1 8 12h8a2.5 2.5 0 0 1 2.5 2.5v2.5a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5v-2.5z" /><path d="M12 12v4" /><path d="M12 8v1" /><circle cx="12" cy="6" r="2" /></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-4 4 4 4 0 0 1-4-4V6a4 4 0 0 1 4-4z"></path>
+    <path d="M16 12a5 5 0 0 1 5 5v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-2a5 5 0 0 1 5-5"></path>
+    <path d="M12 12v3"></path>
+    <path d="M12 18h.01"></path>
+  </svg>
 );
 
 const NurseIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a4 4 0 0 0-4 4v9a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6a4 4 0 0 0-4-4Z" /><path d="M8 22v-5h8v5" /><path d="M12 7v4" /><path d="M10 9h4" /></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2L4 7v10l8 5 8-5V7l-8-5z"></path>
+    <path d="M12 8v8"></path>
+    <path d="M8 12h8"></path>
+  </svg>
 );
 
 const PharmacyIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.5 20.5 10 22l-4-2.5V9l4-2.5L10.5 8" /><path d="M13.5 3.5 14 2l4 2.5V15l-4 2.5-3.5-1.5" /><path d="m14 2-4 2.5V15l4 2.5V2" /><path d="M10 22v-6.5l-4-2.5" /><path d="M2 9.5 6 12" /><path d="M20 14.5 14 12" /><path d="M10 8l4-2.5" /><path d="M10 15.5l4-2.5" /></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M16.5 5.5A7.5 7.5 0 0 0 9 20V5.5z"></path>
+    <path d="M12 2v20"></path>
+    <path d="M7.5 5.5A7.5 7.5 0 0 1 15 20V5.5z"></path>
+    <path d="M5 8l14 0"></path>
+    <path d="M5 16l14 0"></path>
+  </svg>
 );
 
 const LabIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 3v5h6V3" /><path d="M10 14.5a6 6 0 0 0-3.3 5H3" /><path d="M21 19.5a6 6 0 0 0-3.3-5" /><path d="M14 19.5a6 6 0 0 0-3.3-5" /><path d="M12 8v6" /><circle cx="12" cy="17" r="3" /></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M10 2v7.31"></path>
+    <path d="M14 2v7.31"></path>
+    <path d="M19.31 9a7 7 0 0 0-4.71-4.71V2h-5.2v2.29A7 7 0 0 0 4.69 9H2v3h20V9h-2.69z"></path>
+    <circle cx="12" cy="17" r="3"></circle>
+  </svg>
 );
 
 const ProductIcon = () => (
@@ -25,7 +45,14 @@ const ProductIcon = () => (
 );
 
 const AmbulanceIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 10h4" /><path d="M12 8v4" /><rect width="16" height="12" x="4" y="5" rx="2" /><path d="M2 9h2" /><path d="M20 9h2" /><path d="M15 17v2" /><path d="M9 17v2" /></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="1" y="3" width="22" height="13" rx="2" ry="2"></rect>
+    <line x1="16" y1="3" x2="16" y2="16"></line>
+    <line x1="8" y1="3" x2="8" y2="16"></line>
+    <line x1="1" y1="10" x2="23" y2="10"></line>
+    <circle cx="7" cy="19" r="3"></circle>
+    <circle cx="17" cy="19" r="3"></circle>
+  </svg>
 );
 
 const SettingsIcon = () => (
