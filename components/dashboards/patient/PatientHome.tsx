@@ -59,6 +59,10 @@ const SettingsIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
 );
 
+const SubscriptionIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+);
+
 interface DashboardCardProps {
   title: string;
   description: string;
@@ -111,6 +115,8 @@ const PatientHome: React.FC<PatientHomeProps> = ({ user, onNavigate }) => {
     { id: "pharmacy", title: "Pharmacy", description: "Order medicines & upload prescriptions.", icon: <PharmacyIcon />, color: "bg-purple-500" },
     { id: "lab", title: "Lab Tests", description: "Book diagnostics & view reports online.", icon: <LabIcon />, color: "bg-indigo-500" },
     { id: "products", title: "Drepto Store", description: "Healthcare devices & wellness products.", icon: <ProductIcon />, color: "bg-orange-500" },
+    { id: "subscription", title: "Drepto Premium", description: "Exclusive discounts & priority care.", icon: <SubscriptionIcon />, color: "bg-pink-500" },
+
     { id: "ambulance", title: "Ambulance", description: "Emergency 24/7 road & air ambulance.", icon: <AmbulanceIcon />, color: "bg-red-500" },
     { id: "profile", title: "My Profile", description: "Medical records, history & settings.", icon: <SettingsIcon />, color: "bg-gray-700" },
   ];
@@ -124,7 +130,7 @@ const PatientHome: React.FC<PatientHomeProps> = ({ user, onNavigate }) => {
 
   return (
     <div className="space-y-8 animate-fade-in-up pb-10">
-      <CouponPopup isOpen={showCoupon} onClose={() => setShowCoupon(false)} code="DREPTO50" />
+      <CouponPopup isOpen={showCoupon} onClose={() => setShowCoupon(false)} code="FIRSTFREE" />
 
       {/* Hero Banner */}
       <div className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-8 md:p-10 rounded-3xl shadow-2xl text-white overflow-hidden flex flex-col md:flex-row items-start md:items-end justify-between gap-6">

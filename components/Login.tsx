@@ -16,14 +16,18 @@ const Login: React.FC<LoginProps> = ({ onToggleView }) => {
   const { login } = useAuth();
   const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!identifier || !password) {
       setError('Please fill in all fields.');
       return;
     }
     setError('');
-    login(role, identifier);
+    try {
+      await login(identifier, password);
+    } catch (err: any) {
+      setError(err.message || 'Login failed');
+    }
   };
 
   return (

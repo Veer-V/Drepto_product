@@ -31,10 +31,11 @@ const CouponPopup: React.FC<CouponPopupProps> = ({ isOpen, onClose, code }) => {
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Welcome Gift!</h3>
                 <p className="text-gray-600 mb-6">Use this coupon code at checkout to get an exclusive discount.</p>
 
-                <div className="bg-gray-100 rounded-xl p-4 flex items-center justify-between gap-3 border border-gray-200 dashed mb-6 relative group cursor-pointer" onClick={handleCopy}>
-                    <code className="text-xl font-bold text-orange-600 tracking-wider font-mono">{code}</code>
+                <div className="bg-orange-50 p-4 rounded-xl mb-6 flex items-center justify-between border border-orange-100 border-dashed">
+                    <span className="font-mono text-xl font-bold text-orange-600 tracking-wider">{code}</span>
                     <button
-                        className="p-2 bg-white rounded-lg shadow-sm hover:text-orange-600 transition-colors"
+                        onClick={handleCopy}
+                        className="p-2 hover:bg-orange-100 rounded-lg transition-colors group"
                         title="Copy Code"
                     >
                         {copied ? <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>

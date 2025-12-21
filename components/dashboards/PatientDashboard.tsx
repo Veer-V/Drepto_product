@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { User } from '../../types';
 import PatientHome from './patient/PatientHome';
@@ -9,6 +8,7 @@ import LabTests from './patient/LabTests';
 import DreptoProducts from './patient/DreptoProducts';
 import Ambulance from './patient/Ambulance';
 import Profile from './patient/Profile';
+import SubscriptionPlans from './patient/SubscriptionPlans';
 
 interface PatientDashboardProps {
   user: User;
@@ -51,6 +51,12 @@ const ProductIcon = ({ active }: { active: boolean }) => (
   </svg>
 );
 
+const SubscriptionIcon = ({ active }: { active: boolean }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={active ? "text-primary" : "text-gray-500"}>
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+  </svg>
+);
+
 const AmbulanceIcon = ({ active }: { active: boolean }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={active ? "text-primary" : "text-gray-500"}>
     <path d="M10 10h4" /><path d="M12 8v4" /><rect width="16" height="12" x="4" y="5" rx="2" /><path d="M2 9h2" /><path d="M20 9h2" /><path d="M15 17v2" /><path d="M9 17v2" />
@@ -73,6 +79,7 @@ const PatientDashboard: React.FC<PatientDashboardProps> = ({ user }) => {
     { id: 'pharmacy', label: 'Pharmacy', icon: PharmacyIcon },
     { id: 'nurse', label: 'Nurse', icon: NurseIcon },
     { id: 'products', label: 'Drepto Store', icon: ProductIcon },
+    { id: 'subscription', label: 'Premium Plans', icon: SubscriptionIcon },
     { id: 'ambulance', label: 'Ambulance', icon: AmbulanceIcon },
     { id: 'profile', label: 'Profile', icon: SettingsIcon },
   ];
@@ -89,6 +96,8 @@ const PatientDashboard: React.FC<PatientDashboardProps> = ({ user }) => {
         return <LabTests onBack={() => setCurrentView('home')} />;
       case 'products':
         return <DreptoProducts onBack={() => setCurrentView('home')} />;
+      case 'subscription':
+        return <SubscriptionPlans onBack={() => setCurrentView('home')} />;
       case 'ambulance':
         return <Ambulance onBack={() => setCurrentView('home')} />;
       case 'profile':
@@ -110,8 +119,8 @@ const PatientDashboard: React.FC<PatientDashboardProps> = ({ user }) => {
                 key={item.id}
                 onClick={() => setCurrentView(item.id)}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${currentView === item.id
-                    ? 'bg-primary text-white shadow-md shadow-blue-200'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-primary'
+                  ? 'bg-primary text-white shadow-md shadow-blue-200'
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-primary'
                   }`}
               >
                 <item.icon active={currentView === item.id} />
@@ -142,8 +151,8 @@ const PatientDashboard: React.FC<PatientDashboardProps> = ({ user }) => {
               key={item.id}
               onClick={() => setCurrentView(item.id)}
               className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all min-w-[70px] shrink-0 ${currentView === item.id
-                  ? 'text-primary bg-blue-50'
-                  : 'text-gray-400 hover:bg-gray-50'
+                ? 'text-primary bg-blue-50'
+                : 'text-gray-400 hover:bg-gray-50'
                 }`}
             >
               <item.icon active={currentView === item.id} />
