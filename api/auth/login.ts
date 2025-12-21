@@ -1,8 +1,10 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import prisma from '../../lib/prisma';
-import bcrypt from 'bcryptjs';
+import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
+import bcrypt from 'bcryptjs';
+
+const prisma = new PrismaClient(); // Local instance for reliability on Vercel
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     // CORS Headers (for Vercel)
@@ -24,6 +26,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const { email, password } = req.body;
+
+    if (!process.env.JWT_SECRET) {
+        return res.status(500).json({ message: "Configuration Error: JWT_SECRET is missing" });
+    }
 
     if (!email || !password) {
         return res.status(400).json({ message: 'Missing required fields' });
@@ -71,11 +77,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         });
     } catch (error: any) {
         console.error('Login error:', error);
+        // FORCE the error into the message field so the frontend shows it
         return res.status(500).json({
-            message: 'Internal server error',
-            error: error.message,
-            stack: error.stack,
-            type: error.name
+            message: `Login Failed: ${error.message} (Type: ${error.name})`,
+            stack: error.stack
         });
     }
 }

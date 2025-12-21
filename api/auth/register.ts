@@ -1,8 +1,10 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import prisma from '../../lib/prisma';
+import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
+
+const prisma = new PrismaClient(); // Local instance for reliability on Vercel
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     // CORS Headers
