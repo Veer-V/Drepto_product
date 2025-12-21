@@ -77,15 +77,18 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         try {
             const res = await fetch('/api/products');
             if (res.ok) {
-                const data = await res.json();
-                // Map DB fields to UI expected fields if necessary, or just use as is
-                setProducts(data.map((p: any) => ({
-                    ...p,
-                    title: p.name, // UI uses title
-                    image: p.images && p.images.length > 0 ? p.images[0] : '/images/placeholder.jpg',
-                    ingredients: p.ingredients || ["Herbal Extracts"],
-                    benefits: p.benefits || ["Fast Relief"]
-                })));
+                const text = await res.text();
+                try {
+                    const data = JSON.parse(text);
+                    // Map DB fields to UI expected fields if necessary, or just use as is
+                    setProducts(data.map((p: any) => ({
+                        ...p,
+                        title: p.name, // UI uses title
+                        image: p.images && p.images.length > 0 ? p.images[0] : '/images/placeholder.jpg',
+                        ingredients: p.ingredients || ["Herbal Extracts"],
+                        benefits: p.benefits || ["Fast Relief"]
+                    })));
+                } catch (e) { console.error("Bad JSON", text); }
             }
         } catch (error) {
             console.error("Failed to fetch products", error);
@@ -103,8 +106,14 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ items, couponCode })
             });
-            const data = await res.json();
-            setCartTotal(data);
+            const text = await res.text();
+            try {
+                const data = JSON.parse(text);
+                setCartTotal(data);
+            } catch (e) {
+                console.error("Failed to parse JSON:", text);
+                if (!res.ok) console.error("Server Error:", res.status);
+            }
         } catch (e) {
             console.error(e);
         } finally {
