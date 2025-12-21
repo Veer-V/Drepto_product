@@ -71,9 +71,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         });
     } catch (error: any) {
         console.error('Login error:', error);
-        const fs = require('fs');
-        const log = `[${new Date().toISOString()}] LOGIN_ERROR: ${error.message}\nSTACK: ${error.stack}\nREQ_BODY: ${JSON.stringify(req.body)}\n\n`;
-        try { fs.appendFileSync('server_error.log', log); } catch (e) { console.error('Failed to write log', e); }
-        return res.status(500).json({ message: 'Internal server error' });
+        return res.status(500).json({
+            message: 'Internal server error',
+            details: error.message
+        });
     }
 }
