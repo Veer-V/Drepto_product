@@ -2,7 +2,7 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import cookie from 'cookie';
+import { serialize } from 'cookie';
 
 const prisma = new PrismaClient(); // Local instance for reliability on Vercel
 
@@ -58,7 +58,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             { expiresIn: '7d' }
         );
 
-        res.setHeader('Set-Cookie', cookie.serialize('token', token, {
+        res.setHeader('Set-Cookie', serialize('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             maxAge: 60 * 60 * 24 * 7, // 1 week
