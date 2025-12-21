@@ -73,7 +73,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         console.error('Login error:', error);
         return res.status(500).json({
             message: 'Internal server error',
-            details: error.message
+            error: error.message,
+            stack: error.stack,
+            type: error.name
         });
     }
 }
