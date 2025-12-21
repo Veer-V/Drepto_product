@@ -1,7 +1,9 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import prisma from '../../lib/prisma';
+import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
-import cookie from 'cookie';
+import { parse } from 'cookie';
+
+const prisma = new PrismaClient();
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     // CORS Headers
@@ -23,7 +25,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const { plan } = req.body;
-    const cookies = cookie.parse(req.headers.cookie || '');
+    const cookies = parse(req.headers.cookie || '');
     const token = cookies.token;
 
     if (!token) {
@@ -58,8 +60,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         });
 
         return res.status(201).json({ message: 'Subscribed successfully', subscription });
-    } catch (error) {
+    } catch (error: any) {
         console.error('Subscription error:', error);
-        return res.status(500).json({ message: 'Internal server error' });
+        return res.status(500).json({
+            message: `Subscription Failed: ${error.message}`,
+            stack: error.stack
+        });
     }
 }

@@ -1,7 +1,9 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import prisma from '../../lib/prisma';
+import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
-import cookie from 'cookie';
+import { parse } from 'cookie';
+
+const prisma = new PrismaClient();
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     // CORS Headers
@@ -25,7 +27,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const { items, couponCode } = req.body;
 
     // Parse token to identify user
-    const cookies = cookie.parse(req.headers.cookie || '');
+    const cookies = parse(req.headers.cookie || '');
     const token = cookies.token;
 
     let user = null;
@@ -42,35 +44,43 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     let total = 0;
     let message = "";
 
-    for (const item of items) {
-        // item should have productId and quantity
-        // For simplicity if we don't fetch products every time here, we rely on item.price passed OR fetch.
-        // Better fetch:
-        if (item.id) {
-            const product = await prisma.product.findUnique({ where: { id: item.id } });
-            if (product) {
-                total += product.price * (item.quantity || 1);
+    try {
+        for (const item of items) {
+            // item should have productId and quantity
+            // For simplicity if we don't fetch products every time here, we rely on item.price passed OR fetch.
+            // Better fetch:
+            if (item.id) {
+                const product = await prisma.product.findUnique({ where: { id: item.id } });
+                if (product) {
+                    total += product.price * (item.quantity || 1);
+                }
+            } else if (item.price) {
+                // Fallback if passing price directly (less secure but ok for now)
+                total += item.price * (item.quantity || 1);
             }
-        } else if (item.price) {
-            // Fallback if passing price directly (less secure but ok for now)
-            total += item.price * (item.quantity || 1);
         }
-    }
 
-    if (couponCode === 'FIRSTFREE') {
-        if (user && user.isFirstOrder) {
-            total = 0;
-            message = "You are the first customer so we are giving you a free of cost!";
-        } else if (!user) {
-            // If guest, valid if they register? The prompt says "once the registration new registration... went to get coupon code".
-            // We can allow it but maybe with a warning "Register to claim".
-            // BUT prompt says "registration new registration or login registration went to get the coupon code".
-            // Let's assume valid only for logged in new users.
-            message = "Please login/register to use this coupon.";
-        } else {
-            message = "This coupon is only valid for first orders.";
+        if (couponCode === 'FIRSTFREE') {
+            if (user && user.isFirstOrder) {
+                total = 0;
+                message = "You are the first customer so we are giving you a free of cost!";
+            } else if (!user) {
+                // If guest, valid if they register? The prompt says "once the registration new registration... went to get coupon code".
+                // We can allow it but maybe with a warning "Register to claim".
+                // BUT prompt says "registration new registration or login registration went to get the coupon code".
+                // Let's assume valid only for logged in new users.
+                message = "Please login/register to use this coupon.";
+            } else {
+                message = "This coupon is only valid for first orders.";
+            }
         }
-    }
 
-    return res.status(200).json({ total, message });
+        return res.status(200).json({ total, message });
+    } catch (error: any) {
+        console.error('Calculation error:', error);
+        return res.status(500).json({
+            message: `Calculation Failed: ${error.message}`,
+            stack: error.stack
+        });
+    }
 }

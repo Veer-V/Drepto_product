@@ -1,7 +1,9 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import prisma from '../../lib/prisma';
+import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
-import cookie from 'cookie';
+import { parse } from 'cookie';
+
+const prisma = new PrismaClient();
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     // CORS Headers
@@ -25,7 +27,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const { items, couponCode } = req.body;
 
     // Authentication
-    const cookies = cookie.parse(req.headers.cookie || '');
+    const cookies = parse(req.headers.cookie || '');
     const token = cookies.token;
     let user = null;
 
@@ -99,6 +101,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     } catch (e: any) {
         console.error('Order Error:', e);
-        return res.status(500).json({ message: 'Failed to place order' });
+        return res.status(500).json({
+            message: `Order Failed: ${e.message}`,
+            stack: e.stack
+        });
     }
 }
