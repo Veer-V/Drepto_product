@@ -10,23 +10,30 @@ interface Plan {
 
 const plans: Plan[] = [
     {
-        name: 'Silver',
-        price: 'Free',
-        features: ['Priority Doctor Appointments', '5% Discount on Medicines', 'Basic Health Reports'],
-        color: 'bg-gray-100 border-gray-200'
+        name: '1 Month',
+        price: '₹90',
+        features: ['2 Patches', 'Regular Price: ₹90', 'Standard Plan'],
+        color: 'bg-gray-50 border-gray-200'
     },
     {
-        name: 'Gold',
-        price: 'Free',
-        features: ['Instant Video Consultations', '15% Discount on Medicines', 'Free Lab Sample Collection', 'Dedicated Health Manager'],
+        name: '2 Months',
+        price: '₹150',
+        features: ['4 Patches', 'Regular Price: ₹180', 'Save ~17%'],
+        color: 'bg-blue-50 border-blue-200'
+    },
+    {
+        name: '6 Months',
+        price: '₹499',
+        features: ['12 Patches', 'Regular Price: ₹540', 'Save ~8%', 'Most Popular Choice'],
         color: 'bg-yellow-50 border-yellow-200',
         recommended: true
     },
     {
-        name: 'Platinum',
-        price: 'Free',
-        features: ['Unlimited Consultations', '25% Discount on Medicines', 'Full Body Checkup (Quarterly)', '24/7 Emergency Support', 'Family Coverage (4 Members)'],
-        color: 'bg-slate-800 text-white border-slate-700'
+        name: '12 Months',
+        price: '₹999',
+        features: ['24 Patches', 'Regular Price: ₹1080', 'Save ~8%', 'Best Value Plan'],
+        color: 'bg-slate-800 text-white border-slate-700',
+        recommended: true
     }
 ];
 
@@ -72,12 +79,12 @@ const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({ onBack }) => {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {plans.map((plan) => (
                     <div key={plan.name} className={`relative p-8 rounded-3xl border flex flex-col transition-all duration-300 hover:shadow-xl ${plan.color} ${plan.recommended ? 'scale-105 shadow-lg z-10' : ''}`}>
                         {plan.recommended && (
                             <div className="absolute top-0 right-0 bg-gradient-to-r from-orange-400 to-red-500 text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-2xl shadow-sm uppercase tracking-wider">
-                                Most Popular
+                                {plan.name === '6 Months' ? 'Most Popular' : 'Best Value'}
                             </div>
                         )}
 
