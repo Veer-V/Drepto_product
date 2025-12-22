@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-interface Plan {
+export interface Plan {
     name: string;
     price: string;
     features: string[];
@@ -8,7 +8,7 @@ interface Plan {
     recommended?: boolean;
 }
 
-const plans: Plan[] = [
+export const plans: Plan[] = [
     {
         name: '1 Month',
         price: '₹90',

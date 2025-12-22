@@ -185,13 +185,21 @@ const PatientHome: React.FC<PatientHomeProps> = ({ user, onNavigate }) => {
           <h3 className="text-2xl font-bold text-gray-800">Health Services</h3>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
           {modules.map((m) => (
-            <DashboardCard
+            <div
               key={m.id}
-              {...m}
               onClick={() => onNavigate(m.id)}
-            />
+              className="bg-white p-4 md:p-6 rounded-2xl md:rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 group relative overflow-hidden flex flex-col justify-between h-full"
+            >
+              <div>
+                <div className={`w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl flex items-center justify-center mb-3 md:mb-5 ${m.color} text-white shadow-lg shadow-blue-500/30`}>
+                  {React.cloneElement(m.icon as React.ReactElement, { width: 20, height: 20 })}
+                </div>
+                <h3 className="text-sm md:text-xl font-bold text-gray-800 mb-1 md:mb-2 leading-tight">{m.title}</h3>
+                <p className="text-xs md:text-sm text-gray-500 leading-relaxed line-clamp-2 hidden md:block">{m.description}</p>
+              </div>
+            </div>
           ))}
         </div>
       </div>

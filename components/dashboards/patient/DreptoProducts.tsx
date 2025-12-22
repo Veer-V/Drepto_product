@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { formatCurrency } from '../../../lib/utils';
 import { useAuth } from '../../../hooks/useAuth'; // Assuming hook exists
+import { plans, Plan } from './SubscriptionPlans';
 
 // Product Interface matching DB
 interface Product {
@@ -37,7 +38,9 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     const [isPaymentOpen, setIsPaymentOpen] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState<'UPI' | 'Card' | 'COD' | ''>('');
     const [paymentProcessing, setPaymentProcessing] = useState(false);
+
     const [paymentSuccess, setPaymentSuccess] = useState(false);
+    const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
 
     // Initial Load
     useEffect(() => {
@@ -185,101 +188,105 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     if (loading) return <div className="p-10 text-center">Loading Store...</div>;
 
     return (
-        <div className="animate-fade-in-up pb-10 relative">
-            {/* Header */}
-            <div className="flex items-center mb-8 sticky top-0 bg-gray-50/95 backdrop-blur-sm z-30 py-4 border-b border-gray-100">
-                <button onClick={onBack} className="mr-4 p-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors group">
-                    <svg className="w-5 h-5 text-gray-500 group-hover:text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
-                </button>
-                <div className="flex-1">
-                    <h2 className="text-2xl font-bold text-gray-900">Drepto Store</h2>
-                </div>
-
-                <button
-                    onClick={async () => {
-                        if (confirm('Join Drepto Premium Membership (Free)?')) {
-                            try {
-                                const res = await fetch('/api/subscription', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ plan: 'Gold' })
-                                });
-                                if (res.ok) alert('Welcome to Drepto Premium! Your membership is active.');
-                                else alert('Subscription failed.');
-                            } catch (e) { alert('Error subscribing'); }
-                        }
-                    }}
-                    className="mr-3 px-4 py-2 bg-gradient-to-r from-emerald-400 to-teal-500 text-white font-bold rounded-xl text-sm shadow-md hover:shadow-lg transition-all"
-                >
-                    Join Premium (Free) 💎
-                </button>
-
-                <button
-                    onClick={() => setIsCartOpen(true)}
-                    className="p-2 bg-white border border-gray-200 rounded-xl text-gray-600 hover:text-orange-500 relative transition-transform hover:scale-105"
-                >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                    {cart.reduce((acc, item) => acc + item.quantity, 0) > 0 && (
-                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-sm">
-                            {cart.reduce((acc, item) => acc + item.quantity, 0)}
-                        </span>
-                    )}
-                </button>
-            </div>
-
-            {/* Banner */}
-            <div className="bg-orange-50 rounded-2xl p-8 mb-10 text-center relative overflow-hidden shadow-inner">
-                <div className="absolute -left-10 -bottom-10 w-32 h-32 bg-orange-200 rounded-full opacity-50 blur-2xl"></div>
-                <div className="absolute -right-10 -top-10 w-32 h-32 bg-orange-200 rounded-full opacity-50 blur-2xl"></div>
-                <h3 className="text-2xl md:text-3xl font-bold text-orange-900 mb-2 relative z-10">Advanced Pain Relief</h3>
-                <p className="text-orange-800/70 relative z-10">Innovative biodegradable patches for your wellness.</p>
-                <div className="mt-4 inline-block bg-orange-100/50 px-4 py-2 rounded-lg border border-orange-200 text-orange-800 text-sm animate-pulse">
-                    Use code <strong>FIRSTFREE</strong> for a free trial!
-                </div>
-            </div>
-
-            {/* Product Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                {products.map(product => (
-                    <div key={product.id} className="bg-white rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden border border-gray-100 flex flex-col h-full">
-                        <div className="relative h-64 overflow-hidden bg-gray-100">
-                            <img src={product.image} alt={product.name} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
-                            <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide shadow-sm">
-                                {product.category}
-                            </span>
-                            <div className="absolute bottom-4 left-4 text-white">
-                                <h3 className="text-xl font-bold mb-1 shadow-black/50 drop-shadow-md">{product.name}</h3>
-                            </div>
-                        </div>
-                        <div className="p-6 flex-1 flex flex-col">
-                            <p className="text-gray-600 mb-6 text-sm leading-relaxed">{product.description}</p>
-
-                            <div className="mt-auto flex gap-3">
-                                <button
-                                    onClick={() => { setSelectedProduct(product); setModalQuantity(1); }}
-                                    className="flex-1 py-3 px-4 rounded-xl border-2 border-orange-500 text-orange-600 font-bold hover:bg-orange-50 transition-colors text-sm uppercase tracking-wide"
-                                >
-                                    Details
-                                </button>
-                                <button
-                                    onClick={() => addToCart(product)}
-                                    className="flex-[2] py-3 px-4 rounded-xl bg-gray-900 text-white font-bold hover:bg-orange-500 transition-colors shadow-lg hover:shadow-orange-200 flex items-center justify-center gap-2 group-active:scale-95"
-                                >
-                                    <span>Add to Cart</span>
-                                    <span className="bg-white/20 px-2 py-0.5 rounded text-sm group-hover:bg-white/30 transition-colors line-through text-gray-300 text-xs">₹{product.mrp}</span>
-                                    <span className="bg-white/20 px-2 py-0.5 rounded text-sm group-hover:bg-white/30 transition-colors">₹{product.price}</span>
-                                </button>
-                            </div>
-                        </div>
+        <>
+            <div className="animate-fade-in-up pb-10 relative">
+                {/* Header */}
+                <div className="flex items-center mb-8 sticky top-0 bg-gray-50/95 backdrop-blur-sm z-30 py-4 border-b border-gray-100">
+                    <button onClick={onBack} className="mr-4 p-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors group">
+                        <svg className="w-5 h-5 text-gray-500 group-hover:text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+                    <div className="flex-1">
+                        <h2 className="text-2xl font-bold text-gray-900">Drepto Store</h2>
                     </div>
-                ))}
+
+                    <button
+                        onClick={async () => {
+                            if (confirm('Join Drepto Premium Membership (Free)?')) {
+                                try {
+                                    const res = await fetch('/api/subscription', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ plan: 'Gold' })
+                                    });
+                                    if (res.ok) alert('Welcome to Drepto Premium! Your membership is active.');
+                                    else alert('Subscription failed.');
+                                } catch (e) { alert('Error subscribing'); }
+                            }
+                        }}
+                        className="hidden md:block mr-3 px-4 py-2 bg-gradient-to-r from-emerald-400 to-teal-500 text-white font-bold rounded-xl text-sm shadow-md hover:shadow-lg transition-all"
+                    >
+                        Join Premium (Free) 💎
+                    </button>
+
+                    <button
+                        onClick={() => setIsCartOpen(true)}
+                        className="p-2 bg-white border border-gray-200 rounded-xl text-gray-600 hover:text-orange-500 relative transition-transform hover:scale-105"
+                    >
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        {cart.reduce((acc, item) => acc + item.quantity, 0) > 0 && (
+                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-sm">
+                                {cart.reduce((acc, item) => acc + item.quantity, 0)}
+                            </span>
+                        )}
+                    </button>
+                </div>
+
+                {/* Banner */}
+                <div className="bg-orange-50 rounded-2xl p-8 mb-10 text-center relative overflow-hidden shadow-inner">
+                    <div className="absolute -left-10 -bottom-10 w-32 h-32 bg-orange-200 rounded-full opacity-50 blur-2xl"></div>
+                    <div className="absolute -right-10 -top-10 w-32 h-32 bg-orange-200 rounded-full opacity-50 blur-2xl"></div>
+                    <h3 className="text-2xl md:text-3xl font-bold text-orange-900 mb-2 relative z-10">Advanced Pain Relief</h3>
+                    <p className="text-orange-800/70 relative z-10">Innovative biodegradable patches for your wellness.</p>
+                    <div className="mt-4 inline-block bg-orange-100/50 px-4 py-2 rounded-lg border border-orange-200 text-orange-800 text-sm animate-pulse">
+                        Use code <strong>FIRSTFREE</strong> for a free trial!
+                    </div>
+                </div>
+
+                {/* Product Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    {products.map(product => (
+                        <div key={product.id} className="bg-white rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden border border-gray-100 flex flex-col h-full">
+                            <div className="relative h-64 overflow-hidden bg-gray-100">
+                                <img src={product.image} alt={product.name} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
+                                <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide shadow-sm">
+                                    {product.category}
+                                </span>
+                                <div className="absolute bottom-4 left-4 text-white">
+                                    <h3 className="text-xl font-bold mb-1 shadow-black/50 drop-shadow-md">{product.name}</h3>
+                                </div>
+                            </div>
+                            <div className="p-6 flex-1 flex flex-col">
+                                <p className="text-gray-600 mb-6 text-sm leading-relaxed">{product.description}</p>
+
+                                <div className="mt-auto flex gap-3">
+                                    <button
+                                        onClick={() => { setSelectedProduct(product); setModalQuantity(1); }}
+                                        className="flex-1 py-3 px-4 rounded-xl border-2 border-orange-500 text-orange-600 font-bold hover:bg-orange-50 transition-colors text-sm uppercase tracking-wide"
+                                    >
+                                        Details
+                                    </button>
+                                    <button
+                                        onClick={() => addToCart(product)}
+                                        className="flex-[2] py-3 px-4 rounded-xl bg-gray-900 text-white font-bold hover:bg-orange-500 transition-colors shadow-lg hover:shadow-orange-200 flex items-center justify-center gap-2 group-active:scale-95"
+                                    >
+                                        <span>Add</span>
+                                        <span className="bg-white/20 px-2 py-0.5 rounded text-sm group-hover:bg-white/30 transition-colors line-through text-gray-300 text-xs">₹{product.mrp}</span>
+                                        <span className="bg-white/20 px-2 py-0.5 rounded text-sm group-hover:bg-white/30 transition-colors">₹{product.price}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
+
+            {/* --- MODALS (Outside Animation Wrapper) --- */}
 
             {/* Details Modal */}
             {selectedProduct && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-                    <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col relative animate-scale-up">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in" style={{ animationDuration: '0.2s' }}>
+                    <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[85vh] overflow-y-auto shadow-2xl flex flex-col relative animate-scale-up">
                         <button onClick={closeDetails} className="absolute top-4 right-4 p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors z-10">
                             <svg className="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                         </button>
@@ -337,18 +344,39 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                                     </div>
                                     <button
                                         onClick={() => { addToCart(selectedProduct, modalQuantity); closeDetails(); }}
-                                        className="flex-1 sm:flex-none px-8 py-3 bg-orange-500 text-white font-bold rounded-xl shadow-lg shadow-orange-200 hover:bg-orange-600 transition-colors active:scale-95"
+                                        className="flex-1 sm:flex-none px-8 py-3 bg-gray-900 text-white font-bold rounded-xl shadow-lg hover:bg-gray-800 transition-colors active:scale-95"
                                     >
                                         Add to Cart
                                     </button>
                                 </div>
                             </div>
+
+                            {/* Subscription Option for Menstro Only */}
+                            {selectedProduct.name.toLowerCase().includes('menstro') && (
+                                <div className="mt-4 pt-4 border-t border-gray-100">
+                                    <div className="bg-purple-50 rounded-xl p-4 border border-purple-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                                        <div>
+                                            <h4 className="font-bold text-gray-900 flex items-center gap-2">
+                                                <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs uppercase tracking-wide">Subscribe & Save</span>
+                                                Regular Deliveries
+                                            </h4>
+                                            <p className="text-sm text-gray-600 mt-1">Get up to 17% off with our subscription plans.</p>
+                                        </div>
+                                        <button
+                                            onClick={() => { setIsSubscriptionModalOpen(true); }}
+                                            className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition-all active:scale-95"
+                                        >
+                                            View Subscription Plans
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
             )}
 
-            {/* Cart Drawer */}
+            {/* Cart Drawer - Fixed to right side */}
             {isCartOpen && (
                 <div className="fixed inset-0 z-50 flex justify-end">
                     <div className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onClick={() => setIsCartOpen(false)}></div>
@@ -408,7 +436,7 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                         </div>
 
                         {cart.length > 0 && (
-                            <div className="p-6 border-t border-gray-100 bg-white">
+                            <div className="p-6 border-t border-gray-100 bg-white pb-safe">
                                 <div className="flex justify-between items-center mb-6">
                                     <span className="text-gray-500 font-medium">Total Amount</span>
                                     <span className="text-3xl font-bold text-orange-600">
@@ -429,9 +457,9 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
             {/* Payment Modal */}
             {isPaymentOpen && (
-                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-                    <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl p-6 relative animate-scale-up">
-                        <button onClick={() => setIsPaymentOpen(false)} className="absolute top-4 right-4 p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors text-gray-500">X</button>
+                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in" style={{ animationDuration: '0.2s' }}>
+                    <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl p-6 relative animate-scale-up max-h-[90vh] overflow-y-auto">
+                        <button onClick={() => setIsPaymentOpen(false)} className="absolute top-4 right-4 p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors text-gray-500 z-10">X</button>
 
                         {!paymentSuccess ? (
                             <>
@@ -481,7 +509,70 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                     </div>
                 </div>
             )}
-        </div>
+            {/* Subscription Selection Modal */}
+            {isSubscriptionModalOpen && selectedProduct && (
+                <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+                    <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl p-6 relative animate-scale-up max-h-[90vh] overflow-y-auto">
+                        <button
+                            onClick={() => setIsSubscriptionModalOpen(false)}
+                            className="absolute top-4 right-4 p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors text-gray-500 z-10"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+
+                        <div className="text-center mb-6">
+                            <h3 className="text-xl font-bold text-gray-900">Subscribe to {selectedProduct.name}</h3>
+                            <p className="text-sm text-gray-500 mt-1">Select a plan to start your subscription</p>
+                        </div>
+
+                        <div className="space-y-3">
+                            {plans.map((plan) => (
+                                <div
+                                    key={plan.name}
+                                    onClick={async () => {
+                                        if (confirm(`Confirm subscription for ${plan.name} (${plan.price})?`)) {
+                                            setLoading(true);
+                                            try {
+                                                const res = await fetch('/api/subscription', {
+                                                    method: 'POST',
+                                                    headers: { 'Content-Type': 'application/json' },
+                                                    body: JSON.stringify({ plan: plan.name })
+                                                });
+                                                if (res.ok) {
+                                                    alert(`Successfully subscribed to ${plan.name} Plan!`);
+                                                    setIsSubscriptionModalOpen(false);
+                                                } else {
+                                                    alert('Subscription failed. Please try again.');
+                                                }
+                                            } catch (e) {
+                                                alert('Error processing subscription');
+                                            } finally {
+                                                setLoading(false);
+                                            }
+                                        }
+                                    }}
+                                    className={`relative p-4 rounded-xl border-2 transition-all cursor-pointer hover:scale-[1.02] active:scale-95 flex items-center justify-between ${plan.recommended ? 'border-orange-500 bg-orange-50' : 'border-gray-200 hover:border-orange-300'}`}
+                                >
+                                    {plan.recommended && (
+                                        <span className="absolute -top-3 left-4 bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
+                                            {plan.name === '6 Months' ? 'Most Popular' : 'Best Value'}
+                                        </span>
+                                    )}
+                                    <div>
+                                        <h4 className="font-bold text-gray-900">{plan.name}</h4>
+                                        <p className="text-xs text-gray-500 mt-0.5">{plan.features[0]} • {plan.features[2]}</p>
+                                    </div>
+                                    <div className="text-right">
+                                        <div className="font-bold text-lg text-orange-600">{plan.price}</div>
+                                        <div className="text-[10px] text-gray-400 line-through">Regular</div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
     );
 };
 

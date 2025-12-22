@@ -108,7 +108,7 @@ const PatientDashboard: React.FC<PatientDashboardProps> = ({ user }) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row min-h-[calc(100vh-6rem)] bg-gray-50 rounded-xl overflow-hidden border border-gray-200 shadow-sm mt-4 mb-4">
+    <div className="flex flex-col md:flex-row min-h-screen md:min-h-[calc(100vh-6rem)] bg-gray-50 md:rounded-xl md:overflow-hidden md:border border-gray-200 shadow-sm mt-0 md:mt-4 mb-4">
       {/* --- Desktop Sidebar --- */}
       <aside className="hidden md:flex flex-col w-64 bg-white border-r border-gray-200">
         <div className="p-6">
@@ -144,7 +144,7 @@ const PatientDashboard: React.FC<PatientDashboardProps> = ({ user }) => {
       </aside>
 
       {/* --- Mobile Bottom Navigation --- */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 pb-safe shadow-[0_-5px_20px_rgba(0,0,0,0.05)]">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 pb-safe shadow-[0_-5px_20px_rgba(0,0,0,0.05)]">
         <div className="flex items-center p-2 overflow-x-auto gap-2 no-scrollbar px-4">
           {navItems.map((item) => (
             <button
@@ -163,8 +163,9 @@ const PatientDashboard: React.FC<PatientDashboardProps> = ({ user }) => {
       </nav>
 
       {/* --- Main Content Area --- */}
-      <main className="flex-1 p-4 md:p-8 overflow-y-auto h-[calc(100vh-6rem)] pb-24 md:pb-8 scrollbar-hide">
-        <div className="max-w-6xl mx-auto animate-fade-in-up">
+      <main className="flex-1 p-4 md:p-8 md:overflow-y-auto md:h-[calc(100vh-6rem)] pb-28 md:pb-8">
+        {/* Removed animate-fade-in-up wrapper here to prevent fixed positioning traps for children */}
+        <div className="max-w-6xl mx-auto">
           {renderView()}
         </div>
       </main>
