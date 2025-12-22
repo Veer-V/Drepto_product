@@ -378,33 +378,65 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
             {/* Cart Drawer - Fixed to right side */}
             {isCartOpen && (
-                <div className="fixed inset-0 z-50 flex justify-end">
-                    <div className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onClick={() => setIsCartOpen(false)}></div>
+                <div className="fixed inset-0 z-[60] flex justify-end">
+                    <div className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onClick={() => setIsCartOpen(false)}></div>
                     <div className="relative w-full max-w-md bg-white shadow-2xl flex flex-col h-full animate-slide-in-right">
-                        <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                        <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/80 backdrop-blur-sm sticky top-0 z-10">
                             <h3 className="text-xl font-bold text-gray-900">My Cart</h3>
-                            <button onClick={() => setIsCartOpen(false)} className="p-2 hover:bg-gray-200 rounded-full text-gray-500">X</button>
+                            <button onClick={() => setIsCartOpen(false)} className="p-2 hover:bg-gray-200 rounded-full text-gray-500 transition-colors">
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                            </button>
                         </div>
 
-                        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                        <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
                             {cart.length === 0 ? (
-                                <div className="text-center py-20 text-gray-500">Your cart is empty</div>
+                                <div className="flex flex-col items-center justify-center h-full text-gray-400 space-y-4">
+                                    <svg className="w-16 h-16 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                                    <p>Your cart is empty</p>
+                                    <button onClick={() => setIsCartOpen(false)} className="px-6 py-2 bg-orange-100 text-orange-600 rounded-full font-bold text-sm">Start Shopping</button>
+                                </div>
                             ) : (
                                 <>
                                     <div className="space-y-4">
                                         {cart.map((item, index) => (
-                                            <div key={index} className="flex gap-4 p-3 rounded-2xl border border-gray-100 bg-white shadow-sm">
-                                                <img src={item.product.image} alt={item.product.name} className="w-20 h-20 rounded-xl object-cover bg-gray-100" />
-                                                <div className="flex-1 flex flex-col justify-between">
-                                                    <h4 className="font-bold text-gray-800 text-sm line-clamp-2">{item.product.name}</h4>
-                                                    <div className="flex justify-between items-center mt-2">
-                                                        <div className="flex items-center border border-gray-200 rounded-lg bg-gray-50 px-1">
-                                                            <button onClick={() => updateCartQuantity(item.product.id, -1)} className="p-1 px-2 text-gray-500">-</button>
-                                                            <span className="font-bold text-gray-900 w-6 text-center text-sm">{item.quantity}</span>
-                                                            <button onClick={() => updateCartQuantity(item.product.id, 1)} className="p-1 px-2 text-gray-500">+</button>
+                                            <div key={index} className="flex gap-4 p-4 rounded-2xl border border-gray-100 bg-white shadow-sm hover:shadow-md transition-shadow">
+                                                <div className="w-24 h-24 shrink-0 bg-gray-100 rounded-xl overflow-hidden relative">
+                                                    <img src={item.product.image} alt={item.product.name} className="w-full h-full object-cover" />
+                                                </div>
+
+                                                <div className="flex-1 flex flex-col justify-between py-1">
+                                                    <div className="flex justify-between items-start gap-2">
+                                                        <h4 className="font-bold text-gray-900 text-sm leading-tight line-clamp-2">{item.product.name}</h4>
+                                                        <button
+                                                            onClick={() => removeFromCart(item.product.id)}
+                                                            className="text-gray-400 hover:text-red-500 p-1 -mt-1 -mr-1"
+                                                        >
+                                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                                        </button>
+                                                    </div>
+
+                                                    <div className="flex items-end justify-between mt-3">
+                                                        {/* Big Quantity Controls */}
+                                                        <div className="flex items-center border border-gray-200 rounded-xl bg-gray-50 h-10">
+                                                            <button
+                                                                onClick={() => updateCartQuantity(item.product.id, -1)}
+                                                                className="w-10 h-full flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:text-orange-600 rounded-l-xl transition-colors text-lg"
+                                                            >
+                                                                -
+                                                            </button>
+                                                            <span className="font-bold text-gray-900 w-8 text-center text-sm">{item.quantity}</span>
+                                                            <button
+                                                                onClick={() => updateCartQuantity(item.product.id, 1)}
+                                                                className="w-10 h-full flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:text-orange-600 rounded-r-xl transition-colors text-lg"
+                                                            >
+                                                                +
+                                                            </button>
                                                         </div>
-                                                        <div className="text-orange-600 font-bold">₹{item.product.price * item.quantity}</div>
-                                                        <button onClick={() => removeFromCart(item.product.id)} className="text-red-500">Remove</button>
+
+                                                        <div className="text-right">
+                                                            <div className="font-bold text-lg text-orange-600">₹{item.product.price * item.quantity}</div>
+                                                            {item.quantity > 1 && <div className="text-[10px] text-gray-400">₹{item.product.price} each</div>}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -412,19 +444,19 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                                     </div>
 
                                     {/* Coupon Section */}
-                                    <div className="bg-gray-50 p-4 rounded-2xl border border-gray-200">
+                                    <div className="bg-gray-50 p-4 rounded-2xl border border-gray-200 mt-6">
                                         <label className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Apply Coupon</label>
                                         <div className="flex gap-2">
                                             <input
                                                 type="text"
                                                 value={couponCode}
                                                 onChange={e => setCouponCode(e.target.value.toUpperCase())}
-                                                placeholder="Enter code (e.g. FIRSTFREE)"
-                                                className="flex-1 px-4 py-2 rounded-xl border border-gray-300 text-sm outline-none uppercase"
+                                                placeholder="Enter code"
+                                                className="flex-1 px-4 py-3 rounded-xl border border-gray-300 text-sm outline-none uppercase focus:border-orange-500 transition-colors"
                                             />
                                             <button
                                                 onClick={handleApplyCoupon}
-                                                className="px-4 py-2 bg-gray-900 text-white text-sm font-bold rounded-xl hover:bg-gray-800 transition-colors"
+                                                className="px-6 bg-gray-900 text-white text-sm font-bold rounded-xl hover:bg-gray-800 transition-colors shadow-lg"
                                             >
                                                 Apply
                                             </button>
@@ -436,8 +468,8 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                         </div>
 
                         {cart.length > 0 && (
-                            <div className="p-6 border-t border-gray-100 bg-white pb-safe">
-                                <div className="flex justify-between items-center mb-6">
+                            <div className="p-6 border-t border-gray-100 bg-white pb-safe shadow-[0_-5px_20px_rgba(0,0,0,0.05)] z-20">
+                                <div className="flex justify-between items-center mb-4">
                                     <span className="text-gray-500 font-medium">Total Amount</span>
                                     <span className="text-3xl font-bold text-orange-600">
                                         {calculating ? '...' : `₹${cartTotal.total}`}
@@ -445,9 +477,10 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                                 </div>
                                 <button
                                     onClick={() => { setIsPaymentOpen(true); setPaymentSuccess(false); setPaymentMethod(''); }}
-                                    className="w-full py-4 bg-orange-500 text-white font-bold rounded-2xl hover:bg-orange-600 transition-all shadow-lg shadow-orange-200 active:scale-95 text-lg"
+                                    className="w-full py-4 bg-orange-500 text-white font-bold rounded-2xl hover:bg-orange-600 transition-all shadow-lg shadow-orange-200 active:scale-95 text-lg flex items-center justify-center gap-2"
                                 >
                                     Proceed to Checkout
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                                 </button>
                             </div>
                         )}
