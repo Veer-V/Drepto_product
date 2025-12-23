@@ -12,6 +12,10 @@ export interface User {
   lastName: string;
   email: string;
   role: UserRole;
+  phoneNumber?: string; // Optional
+  gender?: string;      // Optional
+  age?: string | number;         // Optional
+  isFirstOrder?: boolean;
 }
 
 export interface ProductFAQ {

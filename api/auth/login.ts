@@ -36,8 +36,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     try {
-        const user = await prisma.user.findUnique({
-            where: { email },
+        const user = await prisma.user.findFirst({
+            where: {
+                OR: [
+                    { email },
+                    { phoneNumber: email }
+                ]
+            },
         });
 
         if (!user) {

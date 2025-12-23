@@ -48,6 +48,9 @@ const Register: React.FC<RegisterProps> = ({ onToggleView }) => {
         firstName: userDetails.firstName,
         lastName: userDetails.lastName,
         email: userDetails.email,
+        phone: userDetails.phone,
+        gender: userDetails.gender,
+        age: userDetails.age,
         role: userDetails.role,
         password: password
       });

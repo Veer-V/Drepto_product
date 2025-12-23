@@ -25,9 +25,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.status(405).json({ message: 'Method not allowed' });
     }
 
-    const { email, password, firstName, lastName } = req.body;
+    const { email, password, firstName, lastName, phone, gender, age } = req.body;
 
-    if (!email || !password || !firstName || !lastName) {
+    if (!email || !password || !firstName || !lastName || !phone || !gender || !age) {
         return res.status(400).json({ message: 'Missing required fields' });
     }
 
@@ -48,6 +48,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 password: hashedPassword,
                 firstName,
                 lastName,
+                phoneNumber: phone,
+                gender,
+                age: age ? parseInt(age) : null,
                 isFirstOrder: true, // First customer logic
             },
         });
