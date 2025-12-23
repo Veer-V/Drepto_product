@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   return (
@@ -24,20 +25,19 @@ const Footer: React.FC = () => {
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 text-sm w-full md:w-auto">
             <div className="flex flex-col gap-2">
               <h4 className="font-bold text-white mb-1">Services</h4>
-              <a href="#" className="text-teal-100 hover:text-white hover:underline">Consultations</a>
-              <a href="#" className="text-teal-100 hover:text-white hover:underline">Pharmacy</a>
-              <a href="#" className="text-teal-100 hover:text-white hover:underline">Lab Tests</a>
+              <Link to="/medicines" className="text-teal-100 hover:text-white hover:underline">Pharmacy</Link>
+              <Link to="/lab-tests" className="text-teal-100 hover:text-white hover:underline">Lab Tests</Link>
             </div>
             <div className="flex flex-col gap-2">
               <h4 className="font-bold text-white mb-1">Company</h4>
-              <a href="#" className="text-teal-100 hover:text-white hover:underline">About Us</a>
+              <Link to="/about-us" className="text-teal-100 hover:text-white hover:underline">About Us</Link>
               <a href="#" className="text-teal-100 hover:text-white hover:underline">Contact</a>
               <a href="#" className="text-teal-100 hover:text-white hover:underline">Careers</a>
             </div>
             <div className="flex flex-col gap-2">
               <h4 className="font-bold text-white mb-1">Legal</h4>
-              <a href="#" className="text-teal-100 hover:text-white hover:underline">Privacy Policy</a>
-              <a href="#" className="text-teal-100 hover:text-white hover:underline">Terms of Use</a>
+              <Link to="/policies" state={{ tab: 'privacy' }} className="text-teal-100 hover:text-white hover:underline">Privacy Policy</Link>
+              <Link to="/policies" state={{ tab: 'terms' }} className="text-teal-100 hover:text-white hover:underline">Terms of Use</Link>
             </div>
           </div>
         </div>

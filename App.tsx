@@ -8,6 +8,7 @@ import DashboardPage from './pages/DashboardPage';
 import MedicinesPage from './pages/MedicinesPage';
 import LabTestsPage from './pages/LabTestsPage';
 import AboutUsPage from './pages/AboutUsPage';
+import PoliciesPage from './pages/PoliciesPage';
 import AdminLogin from './components/admin/AdminLogin';
 import AdminDashboard from './components/admin/AdminDashboard';
 import { ADMIN_AUTH_KEY } from './components/admin/adminData';
@@ -71,6 +72,7 @@ const Main: React.FC = () => {
         <Route path="/medicines" element={<MedicinesPage />} />
         <Route path="/lab-tests" element={<LabTestsPage />} />
         <Route path="/about-us" element={<AboutUsPage />} />
+        <Route path="/policies" element={<PoliciesPage />} />
         <Route path="/auth" element={user ? <Navigate to="/dashboard" /> : <AuthPage />} />
         <Route path="/dashboard" element={user ? <DashboardPage /> : <Navigate to="/auth" />} />
         <Route path="/admin/login" element={<AdminLogin />} />
