@@ -5,7 +5,8 @@ import { loadProjects } from './ProjectData';
 
 const DashboardStats = () => {
     const [stats, setStats] = useState({
-        products: 0,
+        medicines: 0,
+        labTests: 0,
         projects: 0
     });
 
@@ -16,7 +17,8 @@ const DashboardStats = () => {
             const projects = loadProjects();
 
             setStats({
-                products: meds.length,
+                medicines: meds.length,
+                labTests: labs.length,
                 projects: projects.length
             });
         };
@@ -37,9 +39,10 @@ const DashboardStats = () => {
     }, []);
 
     const cards = [
-        { label: 'Store Products', value: stats.products, color: 'bg-orange-500', icon: '🛍️' },
+        { label: 'Total Medicines', value: stats.medicines, color: 'bg-blue-500', icon: '💊' },
+        { label: 'Total Lab Tests', value: stats.labTests, color: 'bg-green-500', icon: '🧪' },
         { label: 'Active Projects', value: stats.projects, color: 'bg-purple-500', icon: '📁' },
-        { label: 'Pending Reviews', value: 3, color: 'bg-blue-500', icon: '📝' }
+        { label: 'Pending Reviews', value: 12, color: 'bg-orange-500', icon: '📝' } // Mock
     ];
 
     return (

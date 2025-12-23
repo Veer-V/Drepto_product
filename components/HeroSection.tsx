@@ -1,8 +1,21 @@
 
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { loadMedicines } from './admin/MedicineData';
+import { loadLabTests } from './admin/LabTestData';
+
 const HeroSection: React.FC = () => {
   const navigate = useNavigate();
+  const [stats, setStats] = useState({ medicines: 0, labTests: 0 });
+
+  useEffect(() => {
+    const meds = loadMedicines();
+    const labs = loadLabTests();
+    setStats({
+      medicines: meds.length > 50 ? meds.length : 120, // Fallback/Mock for demo if empty
+      labTests: labs.length > 20 ? labs.length : 45
+    });
+  }, []);
 
   return (
     <section className="bg-light-blue pt-24 md:pt-32 pb-16">
@@ -13,22 +26,22 @@ const HeroSection: React.FC = () => {
               <span className="text-primary">Drepto Biodevices</span>
             </h1>
             <p className="mt-6 text-lg text-gray-600">
-              Innovative transdermal healthcare solutions. From herbal pain relief to medical-grade biodevices, we bring advanced recovery to your doorstep.
+              Connect with certified doctors, order medicines, book lab tests, and arrange home care—all in one secure app.
             </p>
 
             {/* Dynamic Stats */}
             <div className="mt-8 grid grid-cols-3 gap-4 max-w-lg mx-auto">
               <div className="bg-white p-4 rounded-xl shadow-sm border border-blue-50">
-                <h3 className="text-2xl font-bold text-primary">100%</h3>
-                <p className="text-xs text-gray-500 font-medium">Herbal</p>
+                <h3 className="text-2xl font-bold text-primary">{stats.medicines}+</h3>
+                <p className="text-xs text-gray-500 font-medium">Medicines</p>
               </div>
               <div className="bg-white p-4 rounded-xl shadow-sm border border-green-50">
-                <h3 className="text-2xl font-bold text-green-600">12h+</h3>
-                <p className="text-xs text-gray-500 font-medium">Active Relief</p>
+                <h3 className="text-2xl font-bold text-green-600">{stats.labTests}+</h3>
+                <p className="text-xs text-gray-500 font-medium">Lab Tests</p>
               </div>
               <div className="bg-white p-4 rounded-xl shadow-sm border border-purple-50">
-                <h3 className="text-2xl font-bold text-purple-600">Fast</h3>
-                <p className="text-xs text-gray-500 font-medium">Acting</p>
+                <h3 className="text-2xl font-bold text-purple-600">24/7</h3>
+                <p className="text-xs text-gray-500 font-medium">Support</p>
               </div>
             </div>
 

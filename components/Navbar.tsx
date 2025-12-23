@@ -17,6 +17,8 @@ const Navbar: React.FC<NavbarProps> = ({ sectionRefs }) => {
 
   const navLinks = [
     { name: 'Home', ref: sectionRefs.home, path: '/' },
+    { name: 'Medicines', path: '/medicines' },
+    { name: 'Lab Tests', path: '/lab-tests' },
     { name: 'Features', ref: sectionRefs.product, path: '/' },
     { name: 'About Us', path: '/about-us' },
     { name: 'Contact', ref: sectionRefs.contact, path: '/' },

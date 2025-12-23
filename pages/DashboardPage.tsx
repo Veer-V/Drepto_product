@@ -3,6 +3,8 @@ import { useAuth } from '../hooks/useAuth';
 import { Navigate } from 'react-router-dom';
 import { UserRole } from '../types';
 import PatientDashboard from '../components/dashboards/PatientDashboard';
+import DoctorDashboard from '../components/dashboards/DoctorDashboard';
+import NurseDashboard from '../components/dashboards/NurseDashboard';
 import AIAssistant from '../components/AIAssistant';
 import BackButton from '../components/BackButton';
 
@@ -18,9 +20,11 @@ const DashboardPage: React.FC = () => {
   const renderDashboard = () => {
     switch (user?.role) {
       case UserRole.PATIENT:
-      case UserRole.DOCTOR:
-      case UserRole.NURSE:
         return <PatientDashboard user={user} />;
+      case UserRole.DOCTOR:
+        return <DoctorDashboard user={user} />;
+      case UserRole.NURSE:
+        return <NurseDashboard user={user} />;
       default:
         // Unknown role: if admin session exists, send to admin, else home
         return isAdminAuthed ? <Navigate to="/admin/dashboard" /> : <Navigate to="/" />;
