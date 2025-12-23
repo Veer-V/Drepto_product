@@ -8,13 +8,12 @@ import ActivityFeed from './ActivityFeed';
 import ProjectManager from './ProjectManager';
 
 const AdminDashboard = () => {
-  const [tab, setTab] = useState('medicines');
+  const [tab, setTab] = useState('products');
 
   const getTitle = () => {
     switch (tab) {
       case 'dashboard': return 'Dashboard Overview';
-      case 'medicines': return 'Medicine Management';
-      case 'labtests': return 'Lab Test Management';
+      case 'products': return 'Drepto Store Management';
       case 'projects': return 'Project Management';
       default: return 'Admin Dashboard';
     }
@@ -35,8 +34,7 @@ const AdminDashboard = () => {
                 <p className="text-gray-500 text-sm">Common tasks you can perform</p>
               </div>
               <div className="flex flex-wrap gap-2 justify-center w-full">
-                <button onClick={() => setTab('medicines')} className="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-100">Add Medicine</button>
-                <button onClick={() => setTab('labtests')} className="px-4 py-2 bg-green-50 text-green-600 rounded-lg text-sm font-medium hover:bg-green-100">Add Lab Test</button>
+                <button onClick={() => setTab('products')} className="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-100">Add Product</button>
                 <button onClick={() => setTab('projects')} className="px-4 py-2 bg-purple-50 text-purple-600 rounded-lg text-sm font-medium hover:bg-purple-100">New Project</button>
               </div>
             </div>
@@ -44,9 +42,7 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {tab === 'medicines' && <MedicineCRUD />}
-
-      {tab === 'labtests' && <LabTestCRUD />}
+      {tab === 'products' && <MedicineCRUD />}
 
       {tab === 'projects' && <ProjectManager />}
     </AdminLayout>

@@ -5,16 +5,12 @@ import { AuthProvider, useAuth } from './hooks/useAuth';
 import LandingPage from './pages/LandingPage';
 import AuthPage from './pages/AuthPage';
 import DashboardPage from './pages/DashboardPage';
-import MedicinesPage from './pages/MedicinesPage';
-import LabTestsPage from './pages/LabTestsPage';
 import AboutUsPage from './pages/AboutUsPage';
 import PoliciesPage from './pages/PoliciesPage';
 import AdminLogin from './components/admin/AdminLogin';
 import AdminDashboard from './components/admin/AdminDashboard';
 import { ADMIN_AUTH_KEY } from './components/admin/adminData';
 import MobileBottomNav from './components/mobile/MobileBottomNav';
-import MobileDoctors from './components/mobile/MobileDoctors';
-import MobileNurses from './components/mobile/MobileNurses';
 import MobileProducts from './components/mobile/MobileProducts';
 
 const ScrollToTop = () => {
@@ -69,16 +65,12 @@ const Main: React.FC = () => {
     <div className="bg-gray-50 min-h-screen font-sans pb-16 md:pb-0">
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/medicines" element={<MedicinesPage />} />
-        <Route path="/lab-tests" element={<LabTestsPage />} />
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="/policies" element={<PoliciesPage />} />
         <Route path="/auth" element={user ? <Navigate to="/dashboard" /> : <AuthPage />} />
         <Route path="/dashboard" element={user ? <DashboardPage /> : <Navigate to="/auth" />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<ProtectedAdminRoute><AdminDashboard /></ProtectedAdminRoute>} />
-        <Route path="/mobile/doctors" element={<MobileDoctors />} />
-        <Route path="/mobile/nurses" element={<MobileNurses />} />
         <Route path="/mobile/products" element={<MobileProducts />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

@@ -2,11 +2,11 @@ import React from 'react';
 
 const ActivityFeed = () => {
     const activities = [
-        { id: 1, user: 'Admin', action: 'Added new medicine', target: 'Paracetamol 500mg', time: '2 mins ago' },
-        { id: 2, user: 'Dr. Sarah', action: 'Updated lab test', target: 'Thyroid Profile', time: '1 hour ago' },
+        { id: 1, user: 'Admin', action: 'Added new product', target: 'Drepto Surveda Relief', time: '2 mins ago' },
+        { id: 2, user: 'System', action: 'Inventory sync', target: 'Drepto Store', time: '1 hour ago' },
         { id: 3, user: 'Admin', action: 'Started new project', target: 'Free Dental Camp', time: '3 hours ago' },
         { id: 4, user: 'System', action: 'Backup completed', target: 'Database', time: '5 hours ago' },
-        { id: 5, user: 'Admin', action: 'Deleted medicine', target: 'Expired Syrup', time: '1 day ago' },
+        { id: 5, user: 'Admin', action: 'Updated product', target: 'MenstroHerb Patch', time: '1 day ago' },
     ];
 
     return (
