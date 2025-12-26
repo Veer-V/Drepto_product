@@ -8,7 +8,7 @@ import LabTests from './patient/LabTests';
 import DreptoProducts from './patient/DreptoProducts';
 import Ambulance from './patient/Ambulance';
 import Profile from './patient/Profile';
-import SubscriptionPlans from './patient/SubscriptionPlans';
+
 
 interface PatientDashboardProps {
   user: User;
@@ -51,11 +51,7 @@ const ProductIcon = ({ active }: { active: boolean }) => (
   </svg>
 );
 
-const SubscriptionIcon = ({ active }: { active: boolean }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={active ? "text-primary" : "text-gray-500"}>
-    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-  </svg>
-);
+
 
 const AmbulanceIcon = ({ active }: { active: boolean }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={active ? "text-primary" : "text-gray-500"}>
@@ -79,7 +75,6 @@ const PatientDashboard: React.FC<PatientDashboardProps> = ({ user }) => {
     { id: 'pharmacy', label: 'Pharmacy', icon: PharmacyIcon },
     { id: 'nurse', label: 'Nurse', icon: NurseIcon },
     { id: 'products', label: 'Drepto Store', icon: ProductIcon },
-    { id: 'subscription', label: 'Premium Plans', icon: SubscriptionIcon },
     { id: 'ambulance', label: 'Ambulance', icon: AmbulanceIcon },
     { id: 'profile', label: 'Profile', icon: SettingsIcon },
   ];
@@ -96,8 +91,6 @@ const PatientDashboard: React.FC<PatientDashboardProps> = ({ user }) => {
         return <LabTests onBack={() => setCurrentView('home')} />;
       case 'products':
         return <DreptoProducts onBack={() => setCurrentView('home')} />;
-      case 'subscription':
-        return <SubscriptionPlans onBack={() => setCurrentView('home')} />;
       case 'ambulance':
         return <Ambulance onBack={() => setCurrentView('home')} />;
       case 'profile':

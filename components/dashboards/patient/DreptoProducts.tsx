@@ -3,6 +3,7 @@ import { formatCurrency } from '../../../lib/utils';
 import { useAuth } from '../../../hooks/useAuth'; // Assuming hook exists
 import { plans, Plan } from './SubscriptionPlans';
 
+
 // Product Interface matching DB
 interface Product {
     id: string;
@@ -199,24 +200,7 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                         <h2 className="text-2xl font-bold text-gray-900">Drepto Store</h2>
                     </div>
 
-                    <button
-                        onClick={async () => {
-                            if (confirm('Join Drepto Premium Membership (Free)?')) {
-                                try {
-                                    const res = await fetch('/api/subscription', {
-                                        method: 'POST',
-                                        headers: { 'Content-Type': 'application/json' },
-                                        body: JSON.stringify({ plan: 'Gold' })
-                                    });
-                                    if (res.ok) alert('Welcome to Drepto Premium! Your membership is active.');
-                                    else alert('Subscription failed.');
-                                } catch (e) { alert('Error subscribing'); }
-                            }
-                        }}
-                        className="hidden md:block mr-3 px-4 py-2 bg-gradient-to-r from-emerald-400 to-teal-500 text-white font-bold rounded-xl text-sm shadow-md hover:shadow-lg transition-all"
-                    >
-                        Join Premium (Free) 💎
-                    </button>
+
 
                     <button
                         onClick={() => setIsCartOpen(true)}
@@ -370,7 +354,9 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                                         </button>
                                     </div>
                                 </div>
-                            )}
+                            )} // End of Subscription Option
+
+
                         </div>
                     </div>
                 </div>
@@ -542,6 +528,7 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                     </div>
                 </div>
             )}
+
             {/* Subscription Selection Modal */}
             {isSubscriptionModalOpen && selectedProduct && (
                 <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
