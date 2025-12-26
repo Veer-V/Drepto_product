@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 /lib/generated/prisma
+.env
+users_output.txt
+seed_output.txt

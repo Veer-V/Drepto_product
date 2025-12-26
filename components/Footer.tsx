@@ -36,8 +36,10 @@ const Footer: React.FC = () => {
             </div>
             <div className="flex flex-col gap-2">
               <h4 className="font-bold text-white mb-1">Legal</h4>
-              <Link to="/policies" state={{ tab: 'privacy' }} className="text-teal-100 hover:text-white hover:underline">Privacy Policy</Link>
-              <Link to="/policies" state={{ tab: 'terms' }} className="text-teal-100 hover:text-white hover:underline">Terms of Use</Link>
+              <Link to="/privacy-policy" className="text-teal-100 hover:text-white hover:underline">Privacy Policy</Link>
+              <Link to="/terms-conditions" className="text-teal-100 hover:text-white hover:underline">Terms of Service</Link>
+              <Link to="/refund-policy" className="text-teal-100 hover:text-white hover:underline">Refund Policy</Link>
+              <Link to="/shipping-policy" className="text-teal-100 hover:text-white hover:underline">Shipping Policy</Link>
             </div>
           </div>
         </div>

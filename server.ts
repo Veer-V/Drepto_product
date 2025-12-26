@@ -47,6 +47,8 @@ const adapter = (handler: any) => async (req: Request, res: Response) => {
 
 import placeOrderHandler from './api/orders/place';
 import syncCartHandler from './api/cart/sync';
+import doctorsHandler from './api/doctors/index';
+import appointmentsHandler from './api/appointments/index';
 
 // ... (existing imports)
 
@@ -62,6 +64,10 @@ app.post('/api/cart/sync', adapter(syncCartHandler));
 
 app.post('/api/subscription', adapter(subscriptionHandler));
 app.post('/api/orders/place', adapter(placeOrderHandler));
+
+app.get('/api/doctors', adapter(doctorsHandler));
+app.get('/api/appointments', adapter(appointmentsHandler));
+app.post('/api/appointments', adapter(appointmentsHandler));
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);

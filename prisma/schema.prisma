@@ -104,3 +104,49 @@ model CartItem {
   product   Product @relation(fields: [productId], references: [id])
   quantity  Int     @default(1)
 }
+
+model Doctor {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  specialty       String
+  qualification   String
+  experience      Int
+  rating          Float         @default(0)
+  reviews         Int           @default(0)
+  consultationFee Float
+  image           String?
+  about           String?
+  available       Boolean       @default(true)
+  appointments    Appointment[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model Appointment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  patientId String   @db.ObjectId
+  // In a real app, this would relate to User, but we'll keep it flexible for now
+  // patient   User     @relation(fields: [patientId], references: [id]) 
+  
+  doctorId  String   @db.ObjectId
+  doctor    Doctor   @relation(fields: [doctorId], references: [id])
+  
+  date      DateTime
+  time      String   // Using string for slot "10:00 AM" for simplicity
+  type      String   // "Video", "Audio", "Chat"
+  status    String   @default("UPCOMING") // UPCOMING, COMPLETED, CANCELLED
+  
+  paymentStatus String @default("PENDING")
+  amount        Float
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Prescription {
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+    appointmentId String @db.ObjectId
+    medicines String[] // Simplified list of strings for now
+    notes String?
+    createdAt DateTime @default(now())
+}

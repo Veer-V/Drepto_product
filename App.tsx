@@ -8,7 +8,10 @@ import DashboardPage from './pages/DashboardPage';
 import MedicinesPage from './pages/MedicinesPage';
 import LabTestsPage from './pages/LabTestsPage';
 import AboutUsPage from './pages/AboutUsPage';
-import PoliciesPage from './pages/PoliciesPage';
+import PrivacyPolicy from './pages/legal/PrivacyPolicy';
+import TermsConditions from './pages/legal/TermsConditions';
+import RefundPolicy from './pages/legal/RefundPolicy';
+import ShippingPolicy from './pages/legal/ShippingPolicy';
 import AdminLogin from './components/admin/AdminLogin';
 import AdminDashboard from './components/admin/AdminDashboard';
 import { ADMIN_AUTH_KEY } from './components/admin/adminData';
@@ -16,6 +19,7 @@ import MobileBottomNav from './components/mobile/MobileBottomNav';
 import MobileDoctors from './components/mobile/MobileDoctors';
 import MobileNurses from './components/mobile/MobileNurses';
 import MobileProducts from './components/mobile/MobileProducts';
+import MobileAppointments from './components/mobile/MobileAppointments';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -72,7 +76,10 @@ const Main: React.FC = () => {
         <Route path="/medicines" element={<MedicinesPage />} />
         <Route path="/lab-tests" element={<LabTestsPage />} />
         <Route path="/about-us" element={<AboutUsPage />} />
-        <Route path="/policies" element={<PoliciesPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-conditions" element={<TermsConditions />} />
+        <Route path="/refund-policy" element={<RefundPolicy />} />
+        <Route path="/shipping-policy" element={<ShippingPolicy />} />
         <Route path="/auth" element={user ? <Navigate to="/dashboard" /> : <AuthPage />} />
         <Route path="/dashboard" element={user ? <DashboardPage /> : <Navigate to="/auth" />} />
         <Route path="/admin/login" element={<AdminLogin />} />
@@ -80,6 +87,7 @@ const Main: React.FC = () => {
         <Route path="/mobile/doctors" element={<MobileDoctors />} />
         <Route path="/mobile/nurses" element={<MobileNurses />} />
         <Route path="/mobile/products" element={<MobileProducts />} />
+        <Route path="/mobile/appointments" element={<MobileAppointments />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       <MobileBottomNav />

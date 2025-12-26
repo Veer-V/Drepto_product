@@ -1,40 +1,23 @@
-
-import React, { useState, useEffect } from 'react';
-
-// Types
-interface Doctor {
-    id: number;
-    name: string;
-    specialty: string;
-    rating: number;
-    reviews: number;
-    image: string;
-    available: string;
-}
-
-interface Appointment {
-    id: number;
-    doctorId: number;
-    doctorName: string;
-    specialty: string;
-    date: string;
-    time: string;
-    status: 'Upcoming' | 'Completed' | 'Cancelled';
-    image: string;
-}
+import { doctorService, Doctor } from '../../../services/doctorService';
+import { appointmentService } from '../../../services/appointmentService';
+import { useAuth } from '../../../hooks/useAuth';
 
 // Data initialized as empty for API integration
-const MOCK_DOCTORS: Doctor[] = [];
-const MOCK_APPOINTMENTS: Appointment[] = [];
+// const MOCK_DOCTORS: Doctor[] = []; // Removed mock
+// const MOCK_APPOINTMENTS: Appointment[] = []; // Removed mock
 
 const DoctorAppointment: React.FC<{ onBack: () => void }> = ({ onBack }) => {
+    const { user } = useAuth();
+    const [doctors, setDoctors] = useState<Doctor[]>([]);
     const [activeTab, setActiveTab] = useState<'find' | 'appointments'>('find');
     const [searchTerm, setSearchTerm] = useState('');
     const [availabilityFilter, setAvailabilityFilter] = useState<string>('All');
     const [ratingFilter, setRatingFilter] = useState<string>('All');
     const [view, setView] = useState<'list' | 'slots' | 'success'>('list');
     const [showFilters, setShowFilters] = useState(false); // For mobile collapsible filters
-    
+    const [myAppointments, setMyAppointments] = useState<any[]>([]);
+    const [loading, setLoading] = useState(false);
+
     // Pagination State
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 6;
@@ -44,7 +27,7 @@ const DoctorAppointment: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     const [selectedDate, setSelectedDate] = useState<string>('');
     const [selectedTime, setSelectedTime] = useState<string>('');
     const [address, setAddress] = useState<string>('');
-    
+
     // Calendar State
     const [calDate, setCalDate] = useState(new Date());
 
@@ -54,6 +37,32 @@ const DoctorAppointment: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     // Reminder State
     const [showNotification, setShowNotification] = useState(false);
     const [reminderBanner, setReminderBanner] = useState(true);
+
+    useEffect(() => {
+        // Fetch Doctors
+        const fetchDoctors = async () => {
+            setLoading(true);
+            const docs = await doctorService.getAllDoctors();
+            setDoctors(docs);
+            setLoading(false);
+        };
+        fetchDoctors();
+    }, []);
+
+    useEffect(() => {
+        if (activeTab === 'appointments' && user) {
+            const fetchAppointments = async () => {
+                setLoading(true);
+                // In real app, userId should come from auth user id
+                // For now, assume patient ID matches something or we fetch all for this demo user
+                // Ideally: user.id
+                const apps = await appointmentService.getMyAppointments('Patient', user.id);
+                setMyAppointments(apps);
+                setLoading(false);
+            };
+            fetchAppointments();
+        }
+    }, [activeTab, user]);
 
     useEffect(() => {
         // Simulate a system check for reminders
@@ -74,19 +83,37 @@ const DoctorAppointment: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         setCalDate(new Date());
     };
 
-    const handleRescheduleClick = (appointment: Appointment) => {
-        const doctor = MOCK_DOCTORS.find(d => d.id === appointment.doctorId);
-        if (doctor) {
-             setSelectedDoctor(doctor);
-             setRescheduleId(appointment.id);
-             setAddress(''); 
-             setView('slots');
-             setCalDate(new Date());
-        }
+    const handleRescheduleClick = (appointment: any) => {
+        // const doctor = doctors.find(d => d.id === appointment.doctorId);
+        // if (doctor) {
+        //      setSelectedDoctor(doctor);
+        //      setRescheduleId(appointment.id);
+        //      setAddress(''); 
+        //      setView('slots');
+        //      setCalDate(new Date());
+        // }
     };
 
-    const confirmBooking = () => {
-        setView('success');
+    const confirmBooking = async () => {
+        if (!selectedDoctor || !user) return;
+
+        setLoading(true);
+        try {
+            await appointmentService.createAppointment({
+                patientId: user.id, // Using real user ID
+                doctorId: selectedDoctor.id,
+                date: selectedDate,
+                time: selectedTime,
+                type: 'Video', // Defaulting for now
+                amount: selectedDoctor.consultationFee
+            });
+            setView('success');
+        } catch (error) {
+            alert("Failed to book appointment");
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleFinish = () => {
@@ -94,11 +121,15 @@ const DoctorAppointment: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     };
 
     // Filter Logic
-    const filteredDoctors = MOCK_DOCTORS.filter(d => {
-        const matchesSearch = d.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                              d.specialty.toLowerCase().includes(searchTerm.toLowerCase());
-        
-        const matchesAvailability = availabilityFilter === 'All' || d.available === availabilityFilter;
+    const filteredDoctors = doctors.filter(d => {
+        const matchesSearch = d.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            d.specialty.toLowerCase().includes(searchTerm.toLowerCase());
+
+        // Availability check logic adjustment needed based on string vs boolean in DB
+        // DB has boolean 'available'. UI has filter 'All', 'Today', 'Tomorrow'. 
+        // Simple mapping: if filter is not all, just check availability boolean for now
+        const matchesAvailability = availabilityFilter === 'All' ? true : d.available;
+
         const matchesRating = ratingFilter === 'All' || d.rating >= parseFloat(ratingFilter);
 
         return matchesSearch && matchesAvailability && matchesRating;
@@ -153,13 +184,13 @@ const DoctorAppointment: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     const renderTabs = () => (
         <div className="flex justify-center mb-8">
             <div className="bg-gray-100/80 p-1.5 rounded-2xl flex relative">
-                <button 
+                <button
                     onClick={() => { setActiveTab('find'); setView('list'); }}
                     className={`px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 ${activeTab === 'find' ? 'bg-white text-primary shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
                 >
                     Find a Doctor
                 </button>
-                <button 
+                <button
                     onClick={() => { setActiveTab('appointments'); setView('list'); }}
                     className={`px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 ${activeTab === 'appointments' ? 'bg-white text-primary shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
                 >
@@ -178,7 +209,7 @@ const DoctorAppointment: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             const year = calDate.getFullYear();
             const month = String(calDate.getMonth() + 1).padStart(2, '0');
             const dateStr = `${year}-${month}-${String(day).padStart(2, '0')}`;
-            
+
             const dateToCheck = new Date(calDate.getFullYear(), calDate.getMonth(), day);
             const today = new Date();
             today.setHours(0, 0, 0, 0);
@@ -193,10 +224,10 @@ const DoctorAppointment: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                     disabled={isUnavailable}
                     onClick={() => handleDateSelect(day)}
                     className={`h-10 w-10 rounded-full flex flex-col items-center justify-center text-sm font-bold transition-all mx-auto relative border
-                        ${isSelected 
-                            ? 'bg-primary text-white border-primary shadow-lg transform scale-110 z-10' 
-                            : isUnavailable 
-                                ? 'text-gray-300 cursor-not-allowed bg-transparent border-transparent' 
+                        ${isSelected
+                            ? 'bg-primary text-white border-primary shadow-lg transform scale-110 z-10'
+                            : isUnavailable
+                                ? 'text-gray-300 cursor-not-allowed bg-transparent border-transparent'
                                 : isToday
                                     ? 'text-primary bg-blue-50 border-blue-200'
                                     : 'text-gray-700 bg-white border-gray-100 hover:border-blue-300 hover:bg-blue-50 hover:text-primary'
@@ -240,7 +271,7 @@ const DoctorAppointment: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                         <p className="text-gray-500 text-sm">with {selectedDoctor?.name}</p>
                     </div>
                 </div>
-                
+
                 <div className="p-6 md:p-8">
                     <h4 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
                         <span className="w-6 h-6 bg-blue-100 text-primary rounded-full flex items-center justify-center text-xs">1</span>
@@ -284,8 +315,8 @@ const DoctorAppointment: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
                     <div className="flex gap-4">
                         <button onClick={() => setView('list')} className="flex-1 py-3.5 rounded-xl font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors">Cancel</button>
-                        <button 
-                            onClick={confirmBooking} 
+                        <button
+                            onClick={confirmBooking}
                             disabled={!selectedDate || !selectedTime || !address.trim()}
                             className="flex-1 py-3.5 rounded-xl font-bold text-white bg-primary hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-200"
                         >
@@ -318,19 +349,19 @@ const DoctorAppointment: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                     <div className="flex gap-4">
                         <div className="w-10 h-10 rounded-full bg-blue-50 text-primary flex items-center justify-center flex-shrink-0"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div>
                         <div>
-                             <p className="text-xs text-gray-400 uppercase font-bold tracking-wider mb-1">When</p>
-                             <p className="text-gray-800 font-semibold">{selectedDate} at {selectedTime}</p>
+                            <p className="text-xs text-gray-400 uppercase font-bold tracking-wider mb-1">When</p>
+                            <p className="text-gray-800 font-semibold">{selectedDate} at {selectedTime}</p>
                         </div>
                     </div>
                     <div className="flex gap-4">
                         <div className="w-10 h-10 rounded-full bg-blue-50 text-primary flex items-center justify-center flex-shrink-0"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg></div>
                         <div>
-                             <p className="text-xs text-gray-400 uppercase font-bold tracking-wider mb-1">Where</p>
-                             <p className="text-gray-800 font-medium text-sm">{address}</p>
+                            <p className="text-xs text-gray-400 uppercase font-bold tracking-wider mb-1">Where</p>
+                            <p className="text-gray-800 font-medium text-sm">{address}</p>
                         </div>
                     </div>
                 </div>
-                 <div className="p-6 bg-gray-50 border-t border-gray-100">
+                <div className="p-6 bg-gray-50 border-t border-gray-100">
                     <button onClick={handleFinish} className="w-full bg-primary text-white py-3.5 rounded-xl font-bold hover:bg-blue-600 transition-all shadow-lg shadow-blue-200">Return to Dashboard</button>
                 </div>
             </div>
@@ -339,11 +370,11 @@ const DoctorAppointment: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
     const renderDoctorList = () => (
         <div className="animate-fade-in-up">
-             <div className="mb-8 max-w-4xl mx-auto">
+            <div className="mb-8 max-w-4xl mx-auto">
                 <div className="relative mb-4">
-                    <input 
-                        type="text" 
-                        placeholder="Search for doctors or specialties..." 
+                    <input
+                        type="text"
+                        placeholder="Search for doctors or specialties..."
                         value={searchTerm}
                         onChange={handleSearchChange}
                         className="w-full p-4 pl-12 rounded-2xl border border-gray-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
@@ -353,9 +384,9 @@ const DoctorAppointment: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
                     </button>
                 </div>
-                
+
                 <div className={`flex flex-col md:flex-row gap-3 justify-center transition-all overflow-hidden ${showFilters ? 'max-h-40 opacity-100 mb-4' : 'max-h-0 opacity-0 md:max-h-full md:opacity-100 md:mb-0'}`}>
-                    <select 
+                    <select
                         value={availabilityFilter}
                         onChange={(e) => { setAvailabilityFilter(e.target.value); setCurrentPage(1); }}
                         className="bg-white py-3 px-5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 focus:ring-2 focus:ring-primary/20 outline-none"
@@ -364,7 +395,7 @@ const DoctorAppointment: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                         <option value="Today">Today</option>
                         <option value="Tomorrow">Tomorrow</option>
                     </select>
-                    <select 
+                    <select
                         value={ratingFilter}
                         onChange={(e) => { setRatingFilter(e.target.value); setCurrentPage(1); }}
                         className="bg-white py-3 px-5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 focus:ring-2 focus:ring-primary/20 outline-none"
@@ -385,11 +416,11 @@ const DoctorAppointment: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                             <div>
                                 <h3 className="font-bold text-lg text-gray-800 leading-tight mb-1">{doc.name}</h3>
                                 <p className="text-primary text-sm font-medium mb-2">{doc.specialty}</p>
-                                <p className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md inline-block">Next: {doc.available}</p>
+                                <p className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md inline-block">Next: {doc.available ? 'Today' : 'Unavailable'}</p>
                             </div>
                         </div>
                         <div className="px-6 pb-6">
-                            <button 
+                            <button
                                 onClick={() => handleBookClick(doc)}
                                 className="w-full bg-gray-50 text-gray-800 border border-gray-200 py-3 rounded-xl font-bold hover:bg-primary hover:text-white hover:border-primary transition-all active:scale-95"
                             >
@@ -400,15 +431,15 @@ const DoctorAppointment: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 )) : (
                     <div className="col-span-full text-center py-20">
                         <div className="bg-gray-50 w-32 h-32 rounded-full flex items-center justify-center mx-auto mb-6">
-                             <svg className="w-16 h-16 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            <svg className="w-16 h-16 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         </div>
                         <h3 className="text-xl font-bold text-gray-800 mb-2">No doctors found</h3>
                         <p className="text-gray-500 mb-6">Try adjusting your filters or search terms.</p>
-                        <button onClick={() => {setSearchTerm(''); setAvailabilityFilter('All'); setRatingFilter('All'); setCurrentPage(1);}} className="text-primary font-bold hover:underline">Reset Filters</button>
+                        <button onClick={() => { setSearchTerm(''); setAvailabilityFilter('All'); setRatingFilter('All'); setCurrentPage(1); }} className="text-primary font-bold hover:underline">Reset Filters</button>
                     </div>
                 )}
             </div>
-            
+
             {/* Pagination */}
             {filteredDoctors.length > itemsPerPage && (
                 <div className="flex justify-center items-center gap-4 mt-10">
@@ -438,7 +469,9 @@ const DoctorAppointment: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 </div>
             )}
 
-            {MOCK_APPOINTMENTS.length === 0 ? (
+            {loading && <div className="text-center py-10">Loading...</div>}
+
+            {!loading && myAppointments.length === 0 ? (
                 <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-gray-200">
                     <div className="w-16 h-16 bg-blue-50 text-blue-300 rounded-full flex items-center justify-center mx-auto mb-4">
                         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
@@ -448,27 +481,22 @@ const DoctorAppointment: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                     <button onClick={() => setActiveTab('find')} className="mt-4 px-6 py-2 bg-primary text-white rounded-lg font-bold text-sm shadow-md hover:bg-blue-600 transition-colors">Find a Doctor</button>
                 </div>
             ) : (
-                MOCK_APPOINTMENTS.map(appt => (
+                myAppointments.map(appt => (
                     <div key={appt.id} className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col sm:flex-row items-center gap-6 hover:shadow-md transition-shadow">
-                        <img src={appt.image} alt={appt.doctorName} className="w-16 h-16 rounded-full object-cover ring-2 ring-gray-50" />
+                        <img src={appt.doctor?.image || 'default-avatar.png'} alt={appt.doctor?.name} className="w-16 h-16 rounded-full object-cover ring-2 ring-gray-50" />
                         <div className="flex-1 text-center sm:text-left">
-                            <h3 className="font-bold text-lg text-gray-900">{appt.doctorName}</h3>
-                            <p className="text-primary text-sm font-medium">{appt.specialty}</p>
+                            <h3 className="font-bold text-lg text-gray-900">{appt.doctor?.name || 'Unknown Doctor'}</h3>
+                            <p className="text-primary text-sm font-medium">{appt.doctor?.specialty}</p>
                             <div className="flex items-center justify-center sm:justify-start gap-4 mt-2 text-sm text-gray-500">
-                                <span className="flex items-center gap-1 bg-gray-50 px-2 py-1 rounded"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg> {appt.date}</span>
+                                <span className="flex items-center gap-1 bg-gray-50 px-2 py-1 rounded"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg> {new Date(appt.date).toLocaleDateString()}</span>
                                 <span className="flex items-center gap-1 bg-gray-50 px-2 py-1 rounded"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> {appt.time}</span>
                             </div>
                         </div>
                         <div className="flex flex-col items-center sm:items-end gap-2 w-full sm:w-auto border-t sm:border-t-0 border-gray-100 pt-4 sm:pt-0">
-                             <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${appt.status === 'Upcoming' ? 'bg-green-100 text-green-600' : appt.status === 'Completed' ? 'bg-gray-100 text-gray-500' : 'bg-red-100 text-red-500'}`}>
+                            <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${appt.status === 'UPCOMING' ? 'bg-green-100 text-green-600' : appt.status === 'COMPLETED' ? 'bg-gray-100 text-gray-500' : 'bg-red-100 text-red-500'}`}>
                                 {appt.status}
                             </span>
-                            {appt.status === 'Upcoming' && (
-                                <div className="flex gap-2 w-full sm:w-auto">
-                                    <button className="flex-1 sm:flex-none px-4 py-2 text-sm font-bold text-gray-500 hover:text-red-500 bg-gray-50 rounded-xl hover:bg-red-50 transition-colors">Cancel</button>
-                                    <button onClick={() => handleRescheduleClick(appt)} className="flex-1 sm:flex-none px-4 py-2 text-sm font-bold text-white bg-primary rounded-xl hover:bg-blue-600 transition-colors shadow-sm">Reschedule</button>
-                                </div>
-                            )}
+                            {/* Actions temporarily simplified */}
                         </div>
                     </div>
                 ))
@@ -482,7 +510,7 @@ const DoctorAppointment: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             {showNotification && (
                 <div className="fixed top-24 right-4 md:right-8 z-50 w-full max-w-sm bg-white rounded-2xl shadow-2xl p-4 border-l-4 border-primary animate-fade-in-up flex items-start gap-4">
                     <div className="p-2 bg-blue-50 rounded-full text-primary">
-                         <svg className="w-6 h-6 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                        <svg className="w-6 h-6 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                     </div>
                     <div className="flex-1">
                         <h4 className="font-bold text-gray-900 text-sm">Upcoming Appointment</h4>
