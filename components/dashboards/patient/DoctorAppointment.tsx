@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { doctorService, Doctor } from '../../../services/doctorService';
 import { appointmentService } from '../../../services/appointmentService';
 import { useAuth } from '../../../hooks/useAuth';
+import ComingSoonOverlay from '../../common/ComingSoonOverlay';
 
 // Data initialized as empty for API integration
 // const MOCK_DOCTORS: Doctor[] = []; // Removed mock
@@ -507,37 +508,45 @@ const DoctorAppointment: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
     return (
         <div className="pb-10 relative">
-            {/* Reminder Notification Toast */}
-            {showNotification && (
-                <div className="fixed top-24 right-4 md:right-8 z-50 w-full max-w-sm bg-white rounded-2xl shadow-2xl p-4 border-l-4 border-primary animate-fade-in-up flex items-start gap-4">
-                    <div className="p-2 bg-blue-50 rounded-full text-primary">
-                        <svg className="w-6 h-6 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                    </div>
-                    <div className="flex-1">
-                        <h4 className="font-bold text-gray-900 text-sm">Upcoming Appointment</h4>
-                        <p className="text-xs text-gray-500 mt-1 leading-relaxed">You have a consultation with <span className="font-bold text-gray-700">Dr. Sarah Smith</span> scheduled for tomorrow at 10:00 AM.</p>
-                        <div className="mt-3 flex gap-3">
-                            <button onClick={() => { setActiveTab('appointments'); setShowNotification(false); }} className="text-xs font-bold text-primary hover:underline">View Details</button>
-                            <button onClick={() => setShowNotification(false)} className="text-xs font-bold text-gray-400 hover:text-gray-600">Dismiss</button>
+            <ComingSoonOverlay
+                title="Doctor Appointments"
+                description="Our verified doctor network is expanding. Online video consultations will be available very soon!"
+                onBack={onBack}
+            />
+            {/* Blurred Content */}
+            <div className="pointer-events-none filter blur-sm">
+                {/* Reminder Notification Toast */}
+                {showNotification && (
+                    <div className="fixed top-24 right-4 md:right-8 z-50 w-full max-w-sm bg-white rounded-2xl shadow-2xl p-4 border-l-4 border-primary animate-fade-in-up flex items-start gap-4">
+                        <div className="p-2 bg-blue-50 rounded-full text-primary">
+                            <svg className="w-6 h-6 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                         </div>
+                        <div className="flex-1">
+                            <h4 className="font-bold text-gray-900 text-sm">Upcoming Appointment</h4>
+                            <p className="text-xs text-gray-500 mt-1 leading-relaxed">You have a consultation with <span className="font-bold text-gray-700">Dr. Sarah Smith</span> scheduled for tomorrow at 10:00 AM.</p>
+                            <div className="mt-3 flex gap-3">
+                                <button onClick={() => { setActiveTab('appointments'); setShowNotification(false); }} className="text-xs font-bold text-primary hover:underline">View Details</button>
+                                <button onClick={() => setShowNotification(false)} className="text-xs font-bold text-gray-400 hover:text-gray-600">Dismiss</button>
+                            </div>
+                        </div>
+                        <button onClick={() => setShowNotification(false)} className="text-gray-400 hover:text-gray-600"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
                     </div>
-                    <button onClick={() => setShowNotification(false)} className="text-gray-400 hover:text-gray-600"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                )}
+
+                <div className="flex items-center mb-8">
+                    <button onClick={onBack} className="mr-4 p-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors group">
+                        <svg className="w-5 h-5 text-gray-500 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+                    <h2 className="text-2xl font-bold text-gray-900">Doctor Appointments</h2>
                 </div>
-            )}
 
-            <div className="flex items-center mb-8">
-                <button onClick={onBack} className="mr-4 p-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors group">
-                    <svg className="w-5 h-5 text-gray-500 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
-                </button>
-                <h2 className="text-2xl font-bold text-gray-900">Doctor Appointments</h2>
+                {view === 'success' ? renderSuccess() : view === 'slots' ? renderSlotSelection() : (
+                    <>
+                        {renderTabs()}
+                        {activeTab === 'find' ? renderDoctorList() : renderAppointmentsList()}
+                    </>
+                )}
             </div>
-
-            {view === 'success' ? renderSuccess() : view === 'slots' ? renderSlotSelection() : (
-                <>
-                    {renderTabs()}
-                    {activeTab === 'find' ? renderDoctorList() : renderAppointmentsList()}
-                </>
-            )}
         </div>
     );
 };
