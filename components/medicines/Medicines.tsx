@@ -349,11 +349,21 @@ const Medicines: React.FC<MedicinesProps> = ({ onViewDetails }) => {
             </div>
           </div>
 
-          <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-            {visible.map((product) => (
-              <ProductCard key={product.id} product={product} onViewDetails={onViewDetails} onAdd={addToCart} />
-            ))}
-          </div>
+          {visible.length > 0 ? (
+            <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              {visible.map((product) => (
+                <ProductCard key={product.id} product={product} onViewDetails={onViewDetails} onAdd={addToCart} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-20 bg-white rounded-xl shadow-sm border border-gray-100 text-center">
+              <div className="w-20 h-20 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center mb-4">
+                <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">No Medicines Found</h3>
+              <p className="text-gray-500 max-w-sm">We couldn't find any medicines matching your search or filter. Please try again later or check back soon.</p>
+            </div>
+          )}
 
           <div className="mt-8 md:mt-12">
             <Pagination
@@ -365,20 +375,10 @@ const Medicines: React.FC<MedicinesProps> = ({ onViewDetails }) => {
         </div>
 
         {/* Testimonials (Desktop only for now to save space on mobile, or can be enabled) */}
-        <div className="hidden md:block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl font-bold text-gray-900">What Our Customers Say</h2>
-            <p className="text-gray-500 mt-2">Trusted by thousands of happy customers</p>
-          </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {PHARMACY_TESTIMONIALS.map((testimonial) => (
-              <TestimonialCard key={testimonial.name} testimonial={testimonial} />
-            ))}
-          </div>
-        </div>
+
       </section>
 
-      <FAQ faqs={PHARMACY_FAQS} />
+
     </div>
   );
 };
