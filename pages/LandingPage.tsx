@@ -9,6 +9,7 @@ import Footer from '../components/Footer';
 import MobileHome from '../components/mobile/MobileHome';
 import FeaturedMedicines from '../components/FeaturedMedicines';
 import PopularLabTests from '../components/PopularLabTests';
+import GetAppBanner from '../components/GetAppBanner';
 
 const LandingPage: React.FC = () => {
   const homeRef = useRef<HTMLDivElement>(null);
@@ -41,6 +42,7 @@ const LandingPage: React.FC = () => {
         <FeaturedMedicines />
         <PopularLabTests />
         <div ref={aboutRef}><AboutSection /></div>
+        <GetAppBanner />
         <div ref={contactRef}><ContactSection /></div>
       </main>
 
