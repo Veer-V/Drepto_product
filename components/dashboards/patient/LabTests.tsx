@@ -30,32 +30,7 @@ interface City {
 }
 
 // --- Mock Packages (Keeping as mock for now as requested fix focuses on items visibility) ---
-const labPackages: LabPackage[] = [
-  {
-    id: 1,
-    name: 'Full Body Checkup',
-    tests: ['CBC', 'Lipid Profile', 'Liver Function', 'Kidney Function', 'Thyroid', 'Diabetes'],
-    price: 1999,
-    originalPrice: 3499,
-    discount: '43% off',
-  },
-  {
-    id: 2,
-    name: 'Diabetes Package',
-    tests: ['Fasting Blood Sugar', 'HbA1c', 'Post Prandial Blood Sugar', 'Urine Routine'],
-    price: 1299,
-    originalPrice: 1999,
-    discount: '35% off',
-  },
-  {
-    id: 3,
-    name: 'Cardiac Package',
-    tests: ['Lipid Profile', 'Cardiac Markers', 'ECG', 'Echocardiogram'],
-    price: 3499,
-    originalPrice: 4999,
-    discount: '30% off',
-  },
-];
+const labPackages: LabPackage[] = [];
 
 const cities: City[] = [
   { id: 1, name: 'Mumbai' },
