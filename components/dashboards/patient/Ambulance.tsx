@@ -1,5 +1,6 @@
-
+```javascript
 import React, { useState } from 'react';
+import ComingSoonOverlay from '../../common/ComingSoonOverlay';
 
 const Ambulance: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     const [step, setStep] = useState<'input' | 'searching' | 'tracking'>('input');
@@ -47,8 +48,8 @@ const Ambulance: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                     <div className="bg-white w-full max-w-2xl rounded-t-[2.5rem] shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.2)] p-6 md:p-8 animate-slide-in-up">
                         <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6"></div>
                         <div className="bg-gray-100 p-1.5 rounded-2xl flex mb-6">
-                            <button onClick={() => setType('Road')} className={`flex-1 py-2.5 rounded-xl font-bold text-sm transition-all ${type === 'Road' ? 'bg-white text-red-600 shadow-sm' : 'text-gray-500'}`}>Road Ambulance</button>
-                            <button onClick={() => setType('Air')} className={`flex-1 py-2.5 rounded-xl font-bold text-sm transition-all ${type === 'Air' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500'}`}>Air Lift</button>
+                            <button onClick={() => setType('Road')} className={`flex - 1 py - 2.5 rounded - xl font - bold text - sm transition - all ${ type === 'Road' ? 'bg-white text-red-600 shadow-sm' : 'text-gray-500' } `}>Road Ambulance</button>
+                            <button onClick={() => setType('Air')} className={`flex - 1 py - 2.5 rounded - xl font - bold text - sm transition - all ${ type === 'Air' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-500' } `}>Air Lift</button>
                         </div>
 
                         <div className="space-y-4 mb-6 relative">
@@ -68,7 +69,7 @@ const Ambulance: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                             {type === 'Road' ? (
                                 <>
                                     {[{id: 'basic', l: 'Basic', p: '₹50'}, {id: 'oxygen', l: 'Oxygen', p: '₹80'}, {id: 'icu', l: 'ICU', p: '₹150'}].map(v => (
-                                        <div key={v.id} onClick={() => setVehicleType(v.id)} className={`p-3 rounded-2xl border cursor-pointer transition-all text-center ${vehicleType === v.id ? 'border-red-500 bg-red-50 text-red-700' : 'border-gray-100 hover:border-gray-300'}`}>
+                                        <div key={v.id} onClick={() => setVehicleType(v.id)} className={`p - 3 rounded - 2xl border cursor - pointer transition - all text - center ${ vehicleType === v.id ? 'border-red-500 bg-red-50 text-red-700' : 'border-gray-100 hover:border-gray-300' } `}>
                                             <p className="font-bold text-sm">{v.l}</p>
                                             <p className="font-bold text-xs mt-1">{v.p}</p>
                                         </div>
