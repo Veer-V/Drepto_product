@@ -1,6 +1,11 @@
-
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from 'react-router-dom';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 import LandingPage from './pages/LandingPage';
 import AuthPage from './pages/AuthPage';
@@ -41,7 +46,9 @@ const App: React.FC = () => {
 };
 
 const ProtectedAdminRoute = ({ children }: { children: React.ReactNode }) => {
-  const [isAuthed, setIsAuthed] = React.useState(localStorage.getItem(ADMIN_AUTH_KEY) === 'true');
+  const [isAuthed, setIsAuthed] = React.useState(
+    localStorage.getItem(ADMIN_AUTH_KEY) === 'true',
+  );
 
   React.useEffect(() => {
     const checkAuth = () => {
@@ -80,10 +87,23 @@ const Main: React.FC = () => {
         <Route path="/terms-conditions" element={<TermsConditions />} />
         <Route path="/refund-policy" element={<RefundPolicy />} />
         <Route path="/shipping-policy" element={<ShippingPolicy />} />
-        <Route path="/auth" element={user ? <Navigate to="/dashboard" /> : <AuthPage />} />
-        <Route path="/dashboard" element={user ? <DashboardPage /> : <Navigate to="/auth" />} />
+        <Route
+          path="/auth"
+          element={user ? <Navigate to="/dashboard" /> : <AuthPage />}
+        />
+        <Route
+          path="/dashboard"
+          element={user ? <DashboardPage /> : <Navigate to="/auth" />}
+        />
         <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={<ProtectedAdminRoute><AdminDashboard /></ProtectedAdminRoute>} />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedAdminRoute>
+              <AdminDashboard />
+            </ProtectedAdminRoute>
+          }
+        />
         <Route path="/mobile/doctors" element={<MobileDoctors />} />
         <Route path="/mobile/nurses" element={<MobileNurses />} />
         <Route path="/mobile/products" element={<MobileProducts />} />
@@ -93,6 +113,6 @@ const Main: React.FC = () => {
       <MobileBottomNav />
     </div>
   );
-}
+};
 
 export default App;

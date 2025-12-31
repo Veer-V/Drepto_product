@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import Navbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
@@ -37,13 +36,21 @@ const LandingPage: React.FC = () => {
 
       {/* Desktop View */}
       <main className="hidden md:block">
-        <div ref={homeRef}><HeroSection /></div>
-        <div ref={productRef}><ProductSection /></div>
+        <div ref={homeRef}>
+          <HeroSection />
+        </div>
+        <div ref={productRef}>
+          <ProductSection />
+        </div>
         <FeaturedMedicines />
         <PopularLabTests />
-        <div ref={aboutRef}><AboutSection /></div>
+        <div ref={aboutRef}>
+          <AboutSection />
+        </div>
         <GetAppBanner />
-        <div ref={contactRef}><ContactSection /></div>
+        <div ref={contactRef}>
+          <ContactSection />
+        </div>
       </main>
 
       <div className="hidden md:block">

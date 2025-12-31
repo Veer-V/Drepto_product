@@ -12,11 +12,16 @@ const AdminDashboard = () => {
 
   const getTitle = () => {
     switch (tab) {
-      case 'dashboard': return 'Dashboard Overview';
-      case 'medicines': return 'Medicine Management';
-      case 'labtests': return 'Lab Test Management';
-      case 'projects': return 'Project Management';
-      default: return 'Admin Dashboard';
+      case 'dashboard':
+        return 'Dashboard Overview';
+      case 'medicines':
+        return 'Medicine Management';
+      case 'labtests':
+        return 'Lab Test Management';
+      case 'projects':
+        return 'Project Management';
+      default:
+        return 'Admin Dashboard';
     }
   };
 
@@ -32,12 +37,29 @@ const AdminDashboard = () => {
               <div className="bg-blue-50 p-4 rounded-full text-4xl">🚀</div>
               <div>
                 <h3 className="font-bold text-lg">Quick Actions</h3>
-                <p className="text-gray-500 text-sm">Common tasks you can perform</p>
+                <p className="text-gray-500 text-sm">
+                  Common tasks you can perform
+                </p>
               </div>
               <div className="flex flex-wrap gap-2 justify-center w-full">
-                <button onClick={() => setTab('medicines')} className="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-100">Add Medicine</button>
-                <button onClick={() => setTab('labtests')} className="px-4 py-2 bg-green-50 text-green-600 rounded-lg text-sm font-medium hover:bg-green-100">Add Lab Test</button>
-                <button onClick={() => setTab('projects')} className="px-4 py-2 bg-purple-50 text-purple-600 rounded-lg text-sm font-medium hover:bg-purple-100">New Project</button>
+                <button
+                  onClick={() => setTab('medicines')}
+                  className="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-100"
+                >
+                  Add Medicine
+                </button>
+                <button
+                  onClick={() => setTab('labtests')}
+                  className="px-4 py-2 bg-green-50 text-green-600 rounded-lg text-sm font-medium hover:bg-green-100"
+                >
+                  Add Lab Test
+                </button>
+                <button
+                  onClick={() => setTab('projects')}
+                  className="px-4 py-2 bg-purple-50 text-purple-600 rounded-lg text-sm font-medium hover:bg-purple-100"
+                >
+                  New Project
+                </button>
               </div>
             </div>
           </div>

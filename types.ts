@@ -1,4 +1,3 @@
-
 export enum UserRole {
   PATIENT = 'Patient',
   DOCTOR = 'Doctor',
@@ -13,109 +12,123 @@ export interface User {
   email: string;
   role: UserRole;
   phoneNumber?: string; // Optional
-  gender?: string;      // Optional
-  age?: string | number;         // Optional
+  gender?: string; // Optional
+  age?: string | number; // Optional
   isFirstOrder?: boolean;
 }
 
 export interface ProductFAQ {
-    question: string;
-    answer: string;
+  question: string;
+  answer: string;
 }
 
 export interface Precaution {
-    title: string;
-    advice: string;
-}
+  title: string;
+  advice: string;
+  }
 
 export interface Dosage {
-    overdose: string;
-    missedDose: string;
+  overdose: string;
+  missedDose: string;
 }
 
 export interface Medicine {
-    id: string;
-    name: string;
-    brand: string;
-    price: number;
-    mrp: number;
-    packSize: string;
-    imageUrl: string;
-    images?: string[];
-    description: string;
-    contains: string;
-    therapy: string;
-    uses: string[];
-    contraindications: string[];
-    sideEffects: string[];
-    precautions: Precaution[];
-    howToUse: string;
-    storage: string;
-    quickTips: string[];
-    dosage: Dosage;
-    modeOfAction: string;
-    interactions: string;
-    productFaqs: ProductFAQ[];
+  id: string;
+  name: string;
+  brand: string;
+  price: number;
+  mrp: number;
+  packSize: string;
+  imageUrl: string;
+  images?: string[];
+  description: string;
+  contains: string;
+  therapy: string;
+  uses: string[];
+  contraindications: string[];
+  sideEffects: string[];
+  precautions: Precaution[];
+  howToUse: string;
+  storage: string;
+  quickTips: string[];
+  dosage: Dosage;
+  modeOfAction: string;
+  interactions: string;
+  productFaqs: ProductFAQ[];
+}
+
+export interface Doctor {
+  id: string;
+  name: string;
+  specialty: string;
+  qualification: string;
+  experience: number;
+  rating: number;
+  reviews: number;
+  consultationFee: number;
+  image: string;
+  about: string;
+  available: boolean;
 }
 
 export interface Testimonial {
-    name: string;
-    location: string;
-    quote: string;
+  name: string;
+  location: string;
+  quote: string;
 }
 
 export interface FAQItem {
-    question: string;
-    answer: string;
+  question: string;
+  answer: string;
 }
 
 // --- Lab Test Specific Types ---
 
 export interface LabTestDetail {
-    id: string;
-    name: string;
-    alias: string;
-    testCount: number;
-    fasting: string;
-    reportTime: string;
-    price: number;
-    mrp: number;
-    discount: string;
-    sampleType: string;
-    tubeType: string;
-    description: string;
-    whyItMatters: string;
-    parameters: string[];
-    category: string;
-    rating: number;
-    reviewCount: number;
+  id: string;
+  name: string;
+  alias: string;
+  testCount: number;
+  fasting: string;
+  reportTime: string;
+  price: number;
+  mrp: number;
+  discount: string;
+  sampleType: string;
+  tubeType: string;
+  description: string;
+  whyItMatters: string;
+  parameters: string[];
+  category: string;
+  rating: number;
+  reviewCount: number;
 }
 
 export interface LabPackageDetail {
-    id: string;
-    name: string;
-    testCount: number;
-    fasting: string;
-    reportTime: string;
-    price: number;
-    mrp: number;
-    discount: string;
-    description: string;
-    testsIncluded: string[]; // List of individual test names or categories
-    rating: number;
-    reviewCount: number;
-    idealFor: string;
+  id: string;
+  name: string;
+  testCount: number;
+  fasting: string;
+  reportTime: string;
+  price: number;
+  mrp: number;
+  discount: string;
+  description: string;
+  testsIncluded: string[]; // List of individual test names or categories
+  rating: number;
+  reviewCount: number;
+  idealFor: string;
 }
 
 export interface LabReview {
-    id: string;
-    userName: string;
-    date: string;
-    rating: number;
-    comment: string;
+  id: string;
+  userName: string;
+  date: string;
+  rating: number;
+  comment: string;
 }
 
 export interface City {
-    id: string;
-    name: string;
+  id: string;
+  name: string;
 }

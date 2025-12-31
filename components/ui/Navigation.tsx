@@ -40,15 +40,17 @@ export function Navigation({
   return (
     <nav
       className={cn(
-        orientation === 'horizontal' ? 'flex items-center space-x-1' : 'space-y-1',
-        className
+        orientation === 'horizontal'
+          ? 'flex items-center space-x-1'
+          : 'space-y-1',
+        className,
       )}
       aria-label="Sidebar"
     >
       {items.map((item) => {
         const active = isActive(item);
         const Icon = item.icon;
-        
+
         return (
           <button
             key={item.id}
@@ -58,17 +60,17 @@ export function Navigation({
               active
                 ? activeItemClassName
                 : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900',
-              itemClassName
+              itemClassName,
             )}
             aria-current={active ? 'page' : undefined}
           >
-            <Icon 
-              active={active} 
+            <Icon
+              active={active}
               className={cn(
                 iconClassName,
                 'flex-shrink-0',
-                active ? 'text-current' : 'text-gray-500'
-              )} 
+                active ? 'text-current' : 'text-gray-500',
+              )}
             />
             <span className={cn('ml-3', labelClassName)}>{item.label}</span>
           </button>

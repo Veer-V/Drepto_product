@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -10,7 +9,9 @@ import { useLocation } from 'react-router-dom';
 import MobileHeader from '../components/mobile/MobileHeader';
 
 const MedicinesPage: React.FC = () => {
-  const [selectedMedicine, setSelectedMedicine] = useState<Medicine | null>(null);
+  const [selectedMedicine, setSelectedMedicine] = useState<Medicine | null>(
+    null,
+  );
   const location = useLocation();
 
   // Create dummy refs for Navbar since we are reusing it but not on Landing Page
@@ -24,7 +25,6 @@ const MedicinesPage: React.FC = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [selectedMedicine, location]);
-
 
   // ...
 
@@ -40,7 +40,7 @@ const MedicinesPage: React.FC = () => {
     <div className="flex flex-col min-h-screen">
       <div className="md:hidden">
         <MobileHeader
-          title={selectedMedicine ? "Details" : "Pharmacy"}
+          title={selectedMedicine ? 'Details' : 'Pharmacy'}
           showBack={true}
           onBack={handleMobileBack}
         />

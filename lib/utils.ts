@@ -50,7 +50,13 @@ export function getRandomColor() {
 
 export function getContrastTextColor(bgColor: string): string {
   // This is a simple implementation, you might want to use a more sophisticated one
-  if (bgColor.includes('blue') || bgColor.includes('indigo') || bgColor.includes('purple') || bgColor.includes('pink') || bgColor.includes('red')) {
+  if (
+    bgColor.includes('blue') ||
+    bgColor.includes('indigo') ||
+    bgColor.includes('purple') ||
+    bgColor.includes('pink') ||
+    bgColor.includes('red')
+  ) {
     return 'text-white';
   }
   return 'text-gray-900';

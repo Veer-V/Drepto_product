@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from 'react';
 import { User, UserRole } from '../types';
 
 interface AuthContextType {
@@ -11,7 +17,9 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -48,7 +56,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         throw new Error(data.message || 'Login failed');
       }
     } catch (error) {
-      console.error("Login error", error);
+      console.error('Login error', error);
       throw error;
     }
   };
@@ -75,7 +83,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         throw new Error(data.message || 'Registration failed');
       }
     } catch (error) {
-      console.error("Registration error", error);
+      console.error('Registration error', error);
       throw error;
     }
   };
@@ -83,7 +91,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   return React.createElement(
     AuthContext.Provider,
     { value: { user, loading, login, logout, register } },
-    children
+    children,
   );
 };
 

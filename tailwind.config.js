@@ -8,7 +8,7 @@ export default {
     './components/**/*.{ts,tsx}',
     './pages/**/*.{ts,tsx}',
     './hooks/**/*.{ts,tsx}',
-    './lib/**/*.{ts,tsx}'
+    './lib/**/*.{ts,tsx}',
   ],
   theme: {
     extend: {
@@ -17,7 +17,7 @@ export default {
         secondary: '#10B981',
         'light-blue': '#F0FDFA',
         'dark-blue': '#115E59',
-        'accent': '#F472B6',
+        accent: '#F472B6',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
@@ -46,9 +46,9 @@ export default {
         zoomIn: {
           '0%': { opacity: '0', transform: 'scale(0.95)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
-        }
-      }
-    }
+        },
+      },
+    },
   },
-  plugins: []
+  plugins: [],
 };

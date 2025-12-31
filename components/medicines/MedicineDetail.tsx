@@ -61,15 +61,17 @@ const ProductFAQSection: React.FC<{ faqs: ProductFAQ[] }> = ({ faqs }) => {
             >
               <span className="text-base">{faq.question}</span>
               <ChevronDownIcon
-                className={`w-5 h-5 text-teal-600 transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''
-                  }`}
+                className={`w-5 h-5 text-teal-600 transition-transform duration-300 ${
+                  openIndex === index ? 'rotate-180' : ''
+                }`}
               />
             </button>
             <div
-              className={`overflow-hidden transition-all duration-300 ease-in-out ${openIndex === index
+              className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                openIndex === index
                   ? 'max-h-96 opacity-100'
                   : 'max-h-0 opacity-0'
-                }`}
+              }`}
             >
               <div className="p-4 pt-0 border-t border-gray-100">
                 <p className="text-gray-600 text-sm leading-relaxed">
@@ -96,7 +98,7 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
   const [added, setAdded] = useState(false);
 
   const discount = Math.round(
-    ((medicine.mrp - medicine.price) / medicine.mrp) * 100
+    ((medicine.mrp - medicine.price) / medicine.mrp) * 100,
   );
 
   const handleAddToCart = () => {
@@ -123,7 +125,7 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
 
       setAdded(true);
       setTimeout(() => setAdded(false), 1500);
-    } catch { }
+    } catch {}
   };
 
   return (
@@ -202,7 +204,9 @@ const MedicineDetail: React.FC<MedicineDetailProps> = ({
                   </td>
                 </tr>
                 <tr className="border-b">
-                  <td className="py-2 pr-2 font-semibold text-gray-600">Uses</td>
+                  <td className="py-2 pr-2 font-semibold text-gray-600">
+                    Uses
+                  </td>
                   <td className="py-2 text-gray-800">
                     {medicine.uses.join(', ')}
                   </td>
