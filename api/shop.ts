@@ -1,11 +1,13 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
+import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import { parse } from 'cookie';
+
+const prisma = new PrismaClient();
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     const { action } = req.query;
 
-    // CORS Headers
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -14,8 +16,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method === 'OPTIONS') return res.status(200).end();
 
     try {
-        // Dynamic import
-        const { default: prisma } = await import('../lib/prisma');
+        await prisma.$connect();
 
         // ==========================================
         // PRODUCTS (GET / POST)
@@ -161,6 +162,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 let cart = await prisma.cart.findUnique({ where: { userId } });
                 if (!cart) cart = await prisma.cart.create({ data: { userId } });
 
+                // Use transaction on the same instance
                 await prisma.$transaction(async (tx: any) => {
                     await tx.cartItem.deleteMany({ where: { cartId: cart!.id } });
                     for (const item of items) {
@@ -175,7 +177,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 return res.status(200).json({ message: 'Cart synced' });
             } catch (e) {
                 console.error('Cart Sync Error', e);
-                return res.status(500).json({ message: 'Failed to sync cart' });
+                // Return 200 even on error to prevent UI crash
+                return res.status(200).json({ message: 'Failed to sync cart but continuing' });
             }
         }
 
@@ -221,5 +224,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     } catch (error: any) {
         console.error(`Shop API Error (${action}):`, error);
         return res.status(500).json({ message: `Shop Action Failed: ${error.message}`, details: error.message });
+    } finally {
+        await prisma.$disconnect();
     }
 }

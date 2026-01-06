@@ -1,9 +1,11 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     const { action } = req.query;
 
-    // CORS Headers
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -12,7 +14,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method === 'OPTIONS') return res.status(200).end();
 
     try {
-        const { default: prisma } = await import('../lib/prisma');
+        await prisma.$connect();
 
         // ==========================================
         // DOCTORS (GET)
@@ -77,5 +79,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     } catch (error: any) {
         console.error(`Clinic API Error (${action}):`, error);
         return res.status(500).json({ error: `Clinic Action Failed: ${error.message}` });
+    } finally {
+        await prisma.$disconnect();
     }
 }
