@@ -57,7 +57,7 @@ const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({ onBack }) => {
   const handleSubscribe = async (planName: string) => {
     setLoading(planName);
     try {
-      const res = await fetch('/api/subscription', {
+      const res = await fetch('/api/shop?action=subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ plan: planName }),
@@ -157,13 +157,12 @@ const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({ onBack }) => {
             <button
               onClick={() => handleSubscribe(plan.name)}
               disabled={loading !== null}
-              className={`w-full py-3 rounded-xl font-bold transition-all transform active:scale-95 ${
-                plan.name === 'Platinum'
+              className={`w-full py-3 rounded-xl font-bold transition-all transform active:scale-95 ${plan.name === 'Platinum'
                   ? 'bg-white text-slate-900 hover:bg-gray-100'
                   : plan.recommended
                     ? 'bg-gradient-to-r from-orange-500 to-red-600 text-white shadow-lg shadow-orange-200 hover:shadow-orange-300'
                     : 'bg-gray-900 text-white hover:bg-gray-800'
-              } ${loading ? 'opacity-70 cursor-wait' : ''}`}
+                } ${loading ? 'opacity-70 cursor-wait' : ''}`}
             >
               {loading === plan.name ? 'Processing...' : 'Subscribe Now'}
             </button>

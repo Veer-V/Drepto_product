@@ -11,7 +11,7 @@ const SubscriptionPage = () => {
     setLoading(true);
     setMessage('');
     try {
-      const res = await fetch('/api/subscription', {
+      const res = await fetch('/api/shop?action=subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ plan }),

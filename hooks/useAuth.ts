@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   const login = async (email: string, password: string) => {
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch('/api/auth?action=login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -80,7 +80,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   const register = async (details: any) => {
     try {
-      const res = await fetch('/api/auth/register', {
+      const res = await fetch('/api/auth?action=register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(details),

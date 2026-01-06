@@ -29,7 +29,7 @@ const MobileProducts: React.FC = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch('/api/products');
+      const res = await fetch('/api/shop?action=products');
       if (res.ok) {
         const data = await res.json();
         setProducts(data);
@@ -47,7 +47,7 @@ const MobileProducts: React.FC = () => {
 
     // Sync to DB
     try {
-      await fetch('/api/cart/sync', {
+      await fetch('/api/shop?action=sync-cart', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ items: newCart }),
@@ -63,7 +63,7 @@ const MobileProducts: React.FC = () => {
     setCalculating(true);
     try {
       // First calculate to show user
-      const res = await fetch('/api/cart/calculate', {
+      const res = await fetch('/api/shop?action=calculate-cart', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ items: cart, couponCode: coupon }),
@@ -76,7 +76,7 @@ const MobileProducts: React.FC = () => {
         data.total === 0 ||
         window.confirm(`Place order for ₹${data.total}?`)
       ) {
-        const orderRes = await fetch('/api/orders/place', {
+        const orderRes = await fetch('/api/shop?action=place-order', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ items: cart, couponCode: coupon }),

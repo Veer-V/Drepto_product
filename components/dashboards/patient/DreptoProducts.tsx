@@ -59,7 +59,7 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       try {
         // Format migration might be needed if structure changed, but let's assume valid
         setCart(JSON.parse(stored));
-      } catch {}
+      } catch { }
     }
   }, []);
 
@@ -74,7 +74,7 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
     // Sync to DB with debounce
     const timer = setTimeout(() => {
-      fetch('/api/cart/sync', {
+      fetch('/api/shop?action=sync-cart', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -87,7 +87,7 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch('/api/products');
+      const res = await fetch('/api/shop?action=products');
       if (res.ok) {
         const text = await res.text();
         try {
@@ -123,7 +123,7 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         id: item.product.id,
         quantity: item.quantity,
       }));
-      const res = await fetch('/api/cart/calculate', {
+      const res = await fetch('/api/shop?action=calculate-cart', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ items, couponCode }),
@@ -187,7 +187,7 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         id: item.product.id,
         quantity: item.quantity,
       }));
-      const res = await fetch('/api/orders/place', {
+      const res = await fetch('/api/shop?action=place-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ items, couponCode }),
@@ -837,7 +837,7 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                     ) {
                       setLoading(true);
                       try {
-                        const res = await fetch('/api/subscription', {
+                        const res = await fetch('/api/shop?action=subscribe', {
                           method: 'POST',
                           headers: { 'Content-Type': 'application/json' },
                           body: JSON.stringify({ plan: plan.name }),
