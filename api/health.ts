@@ -1,5 +1,4 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import prisma from '../lib/prisma';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // CORS Headers
@@ -13,12 +12,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const maskedUrl = hasDbUrl ? `${dbUrl.substring(0, 15)}...` : 'MISSING';
 
   try {
-    // Attempt basic query to verify connection
-    // We use the shared prisma instance which handles connection pooling
-    await prisma.$connect(); // Explicit connect to fail fast if there's an issue, though not strictly required
-    const count = await prisma.user.count();
+    // Dynamic import to catch initialization errors (e.g. missing binary, schema issues)
+    // that happen at the top-level of lib/prisma.ts
+    const { default: prisma } = await import('../lib/prisma');
 
-    // We intentionally do NOT disconnect the shared client here
+    // Attempt basic query to verify connection
+    await prisma.$connect();
+    const count = await prisma.user.count();
 
     return res.status(200).json({
       status: 'ok',
@@ -35,9 +35,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     return res.status(500).json({
       status: 'error',
-      message: 'Database Connection Failed',
+      message: 'Database Connection/Init Failed',
       details: error.message,
       type: isPrismaError ? 'DatabaseError' : 'UnknownError',
+      step: 'Initialization', // Flag to know if it failed during import/init
       envCheck: { hasDbUrl, maskedUrl },
     });
   }
