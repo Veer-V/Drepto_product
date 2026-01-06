@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../../lib/prisma';
 import { Request, Response } from 'express';
-
-const prisma = new PrismaClient();
 
 export default async function handler(req: Request, res: Response) {
   // GET: Fetch appointments for a user (Patient or Doctor)
