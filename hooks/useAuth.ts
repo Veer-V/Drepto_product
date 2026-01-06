@@ -48,14 +48,24 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-      const data = await res.json();
+
+      let data;
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        // Vercel or Server error text
+        throw new Error(text || 'Server error');
+      }
+
       if (res.ok) {
         setUser(data.user);
         localStorage.setItem('user', JSON.stringify(data.user));
       } else {
         throw new Error(data.message || 'Login failed');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Login error', error);
       throw error;
     }
@@ -75,14 +85,23 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(details),
       });
-      const data = await res.json();
+
+      let data;
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        throw new Error(text || 'Server error');
+      }
+
       if (res.ok) {
         setUser(data.user);
         localStorage.setItem('user', JSON.stringify(data.user));
       } else {
         throw new Error(data.message || 'Registration failed');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Registration error', error);
       throw error;
     }
