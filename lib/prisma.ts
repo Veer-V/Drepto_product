@@ -12,6 +12,10 @@ declare global {
   var prisma: undefined | ReturnType<typeof prismaClientSingleton>;
 }
 
+if (!process.env.DATABASE_URL) {
+  console.warn('WARNING: DATABASE_URL is not defined in environment variables. Prisma Client may fail to connect.');
+}
+
 const prisma = globalThis.prisma ?? prismaClientSingleton();
 
 export default prisma;
