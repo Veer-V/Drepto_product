@@ -9,6 +9,7 @@ import authHandler from './api/auth';
 import shopHandler from './api/shop';
 import clinicHandler from './api/clinic';
 import debugHandler from './api/debug';
+import testDbHandler from './api/test-db';
 
 dotenv.config();
 
@@ -62,6 +63,7 @@ app.use('/api/clinic', adapter(clinicHandler));
 
 // Debug
 app.get('/api/debug', adapter(debugHandler));
+app.get('/api/test-db', adapter(testDbHandler));
 
 // Legacy Mappings (Optional: if any old frontend code remains, we can map old paths to new logic)
 // For example, if something still calls /api/products, we can reroute it:

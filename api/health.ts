@@ -1,4 +1,5 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
+import { PrismaClient } from '@prisma/client';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // CORS Headers
@@ -7,39 +8,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  const dbUrl = process.env.DATABASE_URL;
-  const hasDbUrl = !!dbUrl;
-  const maskedUrl = hasDbUrl ? `${dbUrl.substring(0, 15)}...` : 'MISSING';
-
   try {
-    // Dynamic import to catch initialization errors (e.g. missing binary, schema issues)
-    // that happen at the top-level of lib/prisma.ts
-    const { default: prisma } = await import('../lib/prisma');
+    const envKeys = Object.keys(process.env);
+    const hasDbUrl = envKeys.includes('DATABASE_URL');
 
-    // Attempt basic query to verify connection
+    // Direct instantiation to bypass lib/prisma.ts singleton potential issues
+    const prisma = new PrismaClient();
+
     await prisma.$connect();
     const count = await prisma.user.count();
+    await prisma.$disconnect();
 
     return res.status(200).json({
       status: 'ok',
       message: 'Database connected successfully',
       userCount: count,
       timestamp: new Date().toISOString(),
-      envCheck: { hasDbUrl, maskedUrl },
+      envCheck: { hasDbUrl },
     });
   } catch (error: any) {
     console.error('Health Check Error:', error);
-
-    // Check for specific Prisma errors
-    const isPrismaError = error.code || (error.message && error.message.includes('Prisma'));
-
     return res.status(500).json({
       status: 'error',
-      message: 'Database Connection/Init Failed',
+      message: 'Health Check Failed',
       details: error.message,
-      type: isPrismaError ? 'DatabaseError' : 'UnknownError',
-      step: 'Initialization', // Flag to know if it failed during import/init
-      envCheck: { hasDbUrl, maskedUrl },
+      stack: error.stack
     });
   }
 }
