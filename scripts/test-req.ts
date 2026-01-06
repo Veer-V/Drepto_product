@@ -8,11 +8,14 @@ const data = JSON.stringify({
   email: `debug_real_${Date.now()}@test.com`,
   role: 'Patient',
   password: 'password123',
+  phone: '1234567890',
+  gender: 'male',
+  age: '25',
 });
 
 const options = {
   hostname: 'localhost',
-  port: 3002, // Targeted debug port
+  port: 3006, // Targeted debug port
   path: '/api/auth/register',
   method: 'POST',
   headers: {
