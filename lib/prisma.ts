@@ -16,7 +16,17 @@ if (!process.env.DATABASE_URL) {
   console.warn('WARNING: DATABASE_URL is not defined in environment variables. Prisma Client may fail to connect.');
 }
 
+// Force short timeouts for Serverless environment to fail-fast
+if (process.env.DATABASE_URL) {
+  if (!process.env.DATABASE_URL.includes('connectTimeoutMS=')) {
+    const separator = process.env.DATABASE_URL.includes('?') ? '&' : '?';
+    process.env.DATABASE_URL = `${process.env.DATABASE_URL}${separator}connectTimeoutMS=5000&socketTimeoutMS=5000`;
+  }
+}
+
 const prisma = globalThis.prisma ?? prismaClientSingleton();
+
+console.log('Prisma Client Initialized'); // Debug log
 
 export default prisma;
 

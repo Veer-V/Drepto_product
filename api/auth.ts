@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { serialize } from 'cookie';
 
 export default createHandler(async (req, res) => {
+    console.log('[API Auth] Request received:', req.query); // Trace entry
     const { action } = req.query;
 
     // Dynamic import to prevent init crash on Vercel
