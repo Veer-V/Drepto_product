@@ -692,14 +692,7 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                     ? 'Complete Your Order'
                     : 'Secure Checkout'}
                 </h3>
-                <div className="bg-gray-50 rounded-xl p-4 mb-6 border border-gray-100 flex justify-between items-center">
-                  <span className="font-medium text-gray-600">
-                    Total Payable
-                  </span>
-                  <span className="text-2xl font-bold text-gray-900">
-                    ₹{cartTotal.total}
-                  </span>
-                </div>
+
 
                 <div className="space-y-3 mb-8">
                   <label className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-1">
