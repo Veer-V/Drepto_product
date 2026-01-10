@@ -604,16 +604,7 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                               </button>
                             </div>
 
-                            <div className="text-right">
-                              <div className="font-bold text-lg text-orange-600">
-                                ₹{item.product.price * item.quantity}
-                              </div>
-                              {item.quantity > 1 && (
-                                <div className="text-[10px] text-gray-400">
-                                  ₹{item.product.price} each
-                                </div>
-                              )}
-                            </div>
+
                           </div>
                         </div>
                       </div>
@@ -642,13 +633,7 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                         Apply
                       </button>
                     </div>
-                    {cartTotal.message && (
-                      <p
-                        className={`text-xs font-bold mt-2 ${cartTotal.total === 0 ? 'text-green-600' : 'text-orange-600'}`}
-                      >
-                        {cartTotal.message}
-                      </p>
-                    )}
+
                   </div>
                 </>
               )}
@@ -656,14 +641,7 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
             {cart.length > 0 && (
               <div className="p-6 border-t border-gray-100 bg-white pb-safe shadow-[0_-5px_20px_rgba(0,0,0,0.05)] z-20">
-                <div className="flex justify-between items-center mb-4">
-                  <span className="text-gray-500 font-medium">
-                    Total Amount
-                  </span>
-                  <span className="text-3xl font-bold text-orange-600">
-                    {calculating ? '...' : `₹${cartTotal.total}`}
-                  </span>
-                </div>
+
                 <button
                   onClick={() => {
                     setIsPaymentOpen(true);
