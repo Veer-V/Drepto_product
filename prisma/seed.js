@@ -12,8 +12,8 @@ async function main() {
         'For relief from cramps during those difficult days. 12 Hours, Ultimate Comfort, Instant Relief, 100% Herbal.',
       detailedDescription:
         'The Drepto MenstroHerb Sheet is a powerful herbal pain-relieving patch designed as a sophisticated and safe method for treating pain and inflammation. It is a Supreme Strength patch intended for use on the external skin (transdermal delivery). The sheet contains active ingredients that provide relief for 12 hours. Unique transdermal system delivers medicine directly through the skin, starting to work within 10 minutes of application.',
-      mrp: 100.0,
-      price: 45.0,
+      mrp: ' ',
+      price: ' ',
       images: ['/images/products/menstroherb.jpg'],
       category: 'Pain Relief',
       ingredients: [
@@ -44,8 +44,8 @@ async function main() {
         "India's First Pain Killer Patch. Supreme Strength for Stiff Neck, Rheumatoid Arthritis, Sore Shoulder, Osteoarthritis.",
       detailedDescription:
         'Introducing the most sophisticated and safest method of treating pain and inflammation. The Aryasoothe patch uses traditional Ayurvedic ingredients backed by modern biotech. It provides instant cooling relief, numbs pain receptors, and reduces discomfort. The breathable adhesive is hypoallergenic and suitable for all skin types.',
-      mrp: 100.0,
-      price: 45.0,
+      mrp: ' ',
+      price: ' ',
       images: ['/images/products/aryasoothe.jpg'],
       category: 'Pain Relief',
       ingredients: [
@@ -77,8 +77,8 @@ async function main() {
         'Ultimate relief with sophisticated pain and inflammation treatment. 24h Active Patch.',
       detailedDescription:
         'The most sophisticated and safest method of treating pain and inflammation. Powerful (NSAID) & Anti-Inflammatory Patch. Post Surgery Pain Relief. Recovery from minor or major strains, sprains & bruises. Dosage: One patch to be applied for 24 hours.',
-      mrp: 100.0,
-      price: 45.0,
+      mrp: ' ',
+      price: ' ',
       images: ['/images/drepto-surveda-relief.png'],
       category: 'Pain Relief',
       ingredients: ['Diclofenac Diethylamine BP 200mg'],
