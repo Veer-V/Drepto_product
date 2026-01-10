@@ -12,7 +12,7 @@ async function main() {
         'For relief from cramps during those difficult days. 12 Hours, Ultimate Comfort, Instant Relief, 100% Herbal.',
       detailedDescription:
         'The Drepto MenstroHerb Sheet is a powerful herbal pain-relieving patch designed as a sophisticated and safe method for treating pain and inflammation. It is a Supreme Strength patch intended for use on the external skin (transdermal delivery). The sheet contains active ingredients that provide relief for 12 hours. Unique transdermal system delivers medicine directly through the skin, starting to work within 10 minutes of application.',
-      mrp: ' ',
+      mrp: 00,
       price: ' ',
       images: ['/images/products/menstroherb.jpg'],
       category: 'Pain Relief',

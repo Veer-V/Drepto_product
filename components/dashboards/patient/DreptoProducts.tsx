@@ -325,12 +325,6 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                     className="flex-[2] py-3 px-4 rounded-xl bg-gray-900 text-white font-bold hover:bg-orange-500 transition-colors shadow-lg hover:shadow-orange-200 flex items-center justify-center gap-2 group-active:scale-95"
                   >
                     <span>Add</span>
-                    <span className="bg-white/20 px-2 py-0.5 rounded text-sm group-hover:bg-white/30 transition-colors line-through text-gray-300 text-xs">
-                      ₹{product.mrp}
-                    </span>
-                    <span className="bg-white/20 px-2 py-0.5 rounded text-sm group-hover:bg-white/30 transition-colors">
-                      ₹{product.price}
-                    </span>
                   </button>
                 </div>
               </div>
@@ -427,17 +421,7 @@ const DreptoProducts: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 )}
               </div>
               <div className="pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div>
-                  <span className="text-sm text-gray-500 block">
-                    Price per pack
-                  </span>
-                  <span className="text-sm text-gray-400 line-through mr-2">
-                    ₹{selectedProduct.mrp}
-                  </span>
-                  <span className="text-3xl font-bold text-gray-900">
-                    ₹{selectedProduct.price}
-                  </span>
-                </div>
+
                 <div className="flex items-center gap-4 w-full sm:w-auto">
                   <div className="flex items-center border border-gray-200 rounded-xl px-2 py-1 bg-gray-50">
                     <button

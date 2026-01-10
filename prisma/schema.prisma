@@ -31,8 +31,8 @@ model Product {
   name                String
   description         String
   detailedDescription String?
-  price               String
-  mrp                 String?
+  price               Float
+  mrp                 Float?
   images              String[]
   category            String
   ingredients         String[]
